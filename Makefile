@@ -21,4 +21,3 @@ run:
 # Bring deployment Docker environment down
 down:
 	docker-compose down --remove-orphans
-
