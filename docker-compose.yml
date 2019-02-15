@@ -107,6 +107,20 @@ services:
       mainchain:
         ipv4_address: 192.168.43.124
 
+  weatherchain_oracle:
+    hostname: weatherchain_root_sc
+    depends_on:
+      - weatherchain_node_1
+    build:
+      context: ./Docker
+      dockerfile: ./workchain_oracle/Dockerfile
+    container_name: weatherchain_oracle
+    networks:
+      weatherchainnet:
+        ipv4_address: 10.0.1.8
+      mainchain:
+        ipv4_address: 192.168.43.125
+
 networks:
   weatherchainnet:
     driver: bridge
