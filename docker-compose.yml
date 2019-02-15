@@ -1,0 +1,101 @@
+version: "3"
+services:
+  weatherchain_bootnode:
+    hostname: weatherchain_bootnode
+    build:
+      context: ./Docker
+      dockerfile: ./bootnode/Dockerfile
+    ports:
+    - 30304:30304
+    networks:
+      chainnet:
+        ipv4_address: 10.0.1.2
+
+  weatherchain_validator_1:
+    hostname: weatherchain_validator_1
+    depends_on:
+    - weatherchain_bootnode
+    environment:
+    - address=0x2932b7a2355d6fecc4b5c0b6bd44cc31df247a2e
+    - bootnodeId=5c6d2de01b7155128cdf5148e92fb1b418c4e728d69508ccdbd0bd53c1d7c970b6cda4494a3b54148c398c38f9c6baf9d006d98a4f4268cefe85fff99afb219f
+    - bootnodeIp=10.0.1.2
+    - chainId=55555
+    - listenport=30305
+    build:
+      context: ./Docker
+      dockerfile: ./validator/Dockerfile
+      args:
+        privatekey: 659cbb0e2411a44db63778987b1e22153c086a95eb6b18bdf89de078917abc63
+        password: pass
+        genesis: weatherchain_genesis.json
+    container_name: weatherchain_validator_1
+    networks:
+      chainnet:
+        ipv4_address: 10.0.1.3
+
+  weatherchain_validator_2:
+    hostname: weatherchain_validator_2
+    depends_on:
+    - weatherchain_bootnode
+    environment:
+    - address=0x2191ef87e392377ec08e7c08eb105ef5448eced5
+    - bootnodeId=5c6d2de01b7155128cdf5148e92fb1b418c4e728d69508ccdbd0bd53c1d7c970b6cda4494a3b54148c398c38f9c6baf9d006d98a4f4268cefe85fff99afb219f
+    - bootnodeIp=10.0.1.2
+    - chainId=55555
+    - listenport=30306
+    build:
+      context: ./Docker
+      dockerfile: ./validator/Dockerfile
+      args:
+        privatekey: 82d052c865f5763aad42add438569276c00d3d88a2d062d36b2bae914d58b8c8
+        password: pass
+        genesis: weatherchain_genesis.json
+    container_name: weatherchain_validator_2
+    networks:
+      chainnet:
+        ipv4_address: 10.0.1.4
+
+  weatherchain_node_1:
+    hostname: weatherchain_node_1
+    depends_on:
+    - weatherchain_validator_1
+    environment:
+    - address=0x2191ef87e392377ec08e7c08eb105ef5448eced5
+    - bootnodeId=5c6d2de01b7155128cdf5148e92fb1b418c4e728d69508ccdbd0bd53c1d7c970b6cda4494a3b54148c398c38f9c6baf9d006d98a4f4268cefe85fff99afb219f
+    - bootnodeIp=10.0.1.2
+    - chainId=55555
+    - listenport=30307
+    build:
+      context: ./Docker
+      dockerfile: ./node/Dockerfile
+      args:
+        privatekey: aa3680d5d48a8283413f7a108367c7299ca73f553735860a87b08f39395618b7
+        password: pass
+        genesis: weatherchain_genesis.json
+    container_name: weatherchain_node_1
+    ports:
+    - 8547:8547
+    networks:
+      chainnet:
+        ipv4_address: 10.0.1.5
+
+  weatherchain_explorer:
+    hostname: weatherchain_explorer
+    depends_on:
+    - weatherchain_node_1
+    ports:
+    - 8081:8081
+    build:
+      context: ./Docker
+      dockerfile: ./explorer/Dockerfile
+    container_name: weatherchain_explorer
+    networks:
+      chainnet:
+        ipv4_address: 10.0.1.6
+
+networks:
+  chainnet:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 10.0.1.0/24
