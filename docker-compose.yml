@@ -93,9 +93,26 @@ services:
       weatherchainnet:
         ipv4_address: 10.0.1.6
 
+  weatherchain_root_sc:
+    hostname: weatherchain_root_sc
+    depends_on:
+    - weatherchain_node_1
+    build:
+      context: ./Docker
+      dockerfile: ./workchain_root_sc/Dockerfile
+    container_name: weatherchain_root_sc
+    networks:
+      weatherchainnet:
+        ipv4_address: 10.0.1.7
+      mainchain:
+        ipv4_address: 192.168.43.124
+
 networks:
   weatherchainnet:
     driver: bridge
     ipam:
       config:
       - subnet: 10.0.1.0/24
+  mainchain:
+    external:
+      name: mainchain_chainnet
