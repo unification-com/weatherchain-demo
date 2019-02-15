@@ -60,7 +60,7 @@ services:
     depends_on:
     - weatherchain_validator_1
     environment:
-    - address=0x2191ef87e392377ec08e7c08eb105ef5448eced5
+    - address=0x0f4f2ac550a1b4e2280d04c21cea7ebd822934b5
     - bootnodeId=5c6d2de01b7155128cdf5148e92fb1b418c4e728d69508ccdbd0bd53c1d7c970b6cda4494a3b54148c398c38f9c6baf9d006d98a4f4268cefe85fff99afb219f
     - bootnodeIp=10.0.1.2
     - chainId=55555
