@@ -27,7 +27,7 @@ ENV bootnodeIp=""
 ENV chainId=""
 ENV listenport=""
 
-CMD exec geth --bootnodes "enode://$bootnodeId@$bootnodeIp:30304" --networkid "$chainId" --verbosity=9 --rpc --rpcaddr "0.0.0.0" --rpcport "8547" --rpcapi "eth,web3,net,admin,debug,db" --rpccorsdomain "*" --syncmode="full" --port $listenport
+CMD exec geth --bootnodes "enode://$bootnodeId@$bootnodeIp:30304" --networkid "$chainId" --verbosity=4 --rpc --rpcaddr "0.0.0.0" --rpcport "8547" --rpcapi "eth,web3,net,admin,debug,db" --rpccorsdomain "*" --syncmode="full" --port $listenport
 
 EXPOSE 8547
-EXPOSE 30304
+EXPOSE $listenport

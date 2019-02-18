@@ -14,6 +14,6 @@ RUN apt-get update \
 
 COPY ./assets/bootnode.key /root/bootnode.key
 
-CMD exec bootnode -nodekey /root/bootnode.key -verbosity 9 -addr :30304
+CMD exec bootnode -nodekey /root/bootnode.key -verbosity 4 --addr :30304
 
-EXPOSE 30304
+EXPOSE 30304/udp
