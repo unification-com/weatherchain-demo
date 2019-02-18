@@ -23,6 +23,7 @@
 //
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
+require("dotenv").config();
 
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const mnemonic = "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat"
@@ -46,10 +47,10 @@ module.exports = {
     // options below to some value.
     //
      development: {
-      host: "172.25.0.5",     // Localhost (default: none)
-      port: 8547,            // Standard Ethereum port (default: none)
-      network_id: "500005",       // Any network (default: none)
-      provider: new HDWalletProvider(mnemonic, 'http://172.25.0.5:8547'),
+      host: process.env.RPC_HOST,     // Localhost (default: none)
+      port: process.env.RPC_PORT,            // Standard Ethereum port (default: none)
+      network_id: process.env.MAINCHAIN_NETWORK_ID,       // Any network (default: none)
+      provider: new HDWalletProvider(process.env.MNEMONIC, process.env.MAINCHAIN_WEB3_PROVIDER_URL),
       gas: 4700000,
      },
 
