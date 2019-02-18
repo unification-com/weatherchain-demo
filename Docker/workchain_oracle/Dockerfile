@@ -8,4 +8,4 @@ RUN npm install
 
 WORKDIR /root/workchain_oracle
 
-CMD cd /root/workchain_oracle && sleep 20s && npm run develop 2>&1 | tee log.txt
+CMD cd /root/workchain_oracle && sleep 20s && npm run develop 2>&1 | tee sc_log.txt
