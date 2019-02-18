@@ -27,6 +27,10 @@ run:
 	docker-compose down --remove-orphans
 	docker-compose up
 
+run-log:
+	docker-compose down --remove-orphans
+	docker-compose up 2>&1 | tee log.txt
+
 # Bring deployment Docker environment down
 down:
 	docker-compose down --remove-orphans
