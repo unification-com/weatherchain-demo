@@ -1,7 +1,7 @@
 FROM node:latest
 
 COPY ./assets/workchain_root_sc /root/workchain_root_sc
-COPY ./assets/workchain_sc.env /root/workchain_root_sc/.env
+COPY ./assets/weatherchain.env /root/workchain_root_sc/.env
 
 WORKDIR /root/workchain_root_sc
 

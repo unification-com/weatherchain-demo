@@ -1,7 +1,7 @@
 FROM node:latest
 
 COPY ./assets/workchain_oracle /root/workchain_oracle
-COPY ./assets/workchain_oracle.env /root/workchain_oracle/.env
+COPY ./assets/weatherchain.env /root/workchain_oracle/.env
 
 WORKDIR /root/workchain_oracle
 

@@ -4,7 +4,7 @@ FROM node:8
 WORKDIR /root
 
 COPY ./assets/weather-oracle-contract /root/weather-oracle-contract
-COPY ./assets/weather-oracle-contract/.env.example /root/weather-oracle-contract/.env
+COPY ./assets/weatherchain.env /root/weather-oracle-contract/.env
 COPY ./assets/weather-oracle-service /root/weather-oracle-service
 
 WORKDIR /root/weather-oracle-contract
