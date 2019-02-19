@@ -16,5 +16,15 @@ app.get('/', function(req, res) {
     });
 });
 
+// block validation page
+app.get('/validate', function(req, res) {
+    res.render('pages/validate',{
+        WORKCHAIN_WEB3_PROVIDER_URL: process.env.WORKCHAIN_WEB3_PROVIDER_URL,
+        MAINCHAIN_WEB3_PROVIDER_URL: process.env.MAINCHAIN_WEB3_PROVIDER_URL,
+        WORKCHAIN_ROOT_CONTRACT_ADDRESS: process.env.WORKCHAIN_ROOT_CONTRACT_ADDRESS,
+        WORKCHAIN_ROOT_ABI: process.env.WORKCHAIN_ROOT_ABI
+    });
+});
+
 app.listen(4040);
 console.log('4040 is the magic port');

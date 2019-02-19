@@ -26,4 +26,4 @@ CMD cd /root/weather-oracle-contract && truffle migrate --reset 2>&1 | tee sc_lo
     && cd /root/weather-oracle-service && npm run develop 2>&1 | tee service_log.txt \
     & cd /root/weather-ui && node server.js
 
-EXPOSE 4040
+#EXPOSE 4040
