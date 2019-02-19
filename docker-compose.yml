@@ -97,6 +97,8 @@ services:
     hostname: weather_service
     depends_on:
       - weatherchain_node_1
+    ports:
+    - 4040:4040
     build:
       context: ./Docker
       dockerfile: ./weather_service/Dockerfile
