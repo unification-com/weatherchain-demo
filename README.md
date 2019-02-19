@@ -24,10 +24,8 @@ Once Mainchain is up and running, from this directory run:
 
 Weatherchain's blocks can be viewed via http://172.25.0.6:8081
 
-The Workchain Oracle's logs can be monitored:
-
-1) `docker exec -it weatherchain_oracle /bin/bash`
-2) `tail -f log.txt`
+Weatherchain also has a simple UI for watching the Weather Service smart contract,
+ and verifying blocks with the Mainchain: http://http://172.25.0.7:4040/
 
 ### Bringing it down
 
