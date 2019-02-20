@@ -44,7 +44,12 @@ RUN add-apt-repository ppa:ethereum/ethereum && \
     apt-get -y install \
         solc
 
-RUN echo "go install github.com/unification-com/haiku-core/oracle" >> /root/.bash_history && \
-    echo "go run /root/.go/src/github.com/unification-com/haiku-core/oracle/oracle.go" >> /root/.bash_history && \
-    echo "/root/.go/bin/oracle" >> /root/.bash_history && \
+RUN go install github.com/unification-com/mainchain/cmd/abigen
+
+ENV PATH="/usr/local/go/bin:/root/.go/bin:${PATH}"
+
+COPY ./assets/.bashrc /root/.bashrc
+
+RUN echo "clear; clean; work" >> /root/.bash_history && \
+    echo 'go run /root/.go/src/github.com/unification-com/haiku-core/oracle/oracle.go "https://mainnet.infura.io" "http://ganachecli:8545" "6cbed15c793ce57650b9877cf6fa156fbef513c4e6134f022a85b1ffdd59b2a1" "0xC89Ce4735882C9F0f0FE26686c53074E09B0D550" 60' >> /root/.bash_history && \
     echo "alias ll='ls -la'" >> /root/.bashrc
