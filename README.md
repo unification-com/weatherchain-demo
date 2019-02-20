@@ -25,7 +25,7 @@ Once Mainchain is up and running, from this directory run:
 Weatherchain's blocks can be viewed via http://172.25.0.6:8081
 
 Weatherchain also has a simple UI for watching the Weather Service smart contract,
- and verifying blocks with the Mainchain: http://http://172.25.0.7:4040/
+ and verifying blocks with the Mainchain: http://172.25.0.7:4040/
 
 ### Bringing it down
 
