@@ -9,80 +9,91 @@ services:
     - 30304:30304/udp
     networks:
       weatherchainnet:
-        ipv4_address: 172.25.0.2
+        ipv4_address: ${BOOTNODE_IP}
+    volumes:
+      - ./Docker/assets:/root/assets:Z
 
   weatherchain_validator_1:
     hostname: weatherchain_validator_1
     depends_on:
     - weatherchain_bootnode
     environment:
-    - address=0x2932b7a2355d6fecc4b5c0b6bd44cc31df247a2e
-    - bootnodeId=5c6d2de01b7155128cdf5148e92fb1b418c4e728d69508ccdbd0bd53c1d7c970b6cda4494a3b54148c398c38f9c6baf9d006d98a4f4268cefe85fff99afb219f
-    - bootnodeIp=172.25.0.2
-    - chainId=500005
+    - address=${EV1_PUBLIC_ADDRESS}
+    - bootnodeId=${BOOTNODE_ID}
+    - bootnodeIp=${BOOTNODE_IP}
+    - chainId=${WORKCHAIN_CHAIN_ID}
     - listenport=30305
     build:
       context: ./Docker
       dockerfile: ./validator/Dockerfile
       args:
-        privatekey: 659cbb0e2411a44db63778987b1e22153c086a95eb6b18bdf89de078917abc63
-        password: pass
+        privatekey: ${EV1_PRIVATE_KEY}
+        password: ${EV1_WALLET_PASS}
         genesis: weatherchain_genesis.json
     container_name: weatherchain_validator_1
     networks:
       weatherchainnet:
-        ipv4_address: 172.25.0.3
+        ipv4_address: ${EV1_IP}
+    volumes:
+      - ./Docker/assets:/root/assets:Z
 
   weatherchain_validator_2:
     hostname: weatherchain_validator_2
     depends_on:
     - weatherchain_bootnode
     environment:
-    - address=0x2191ef87e392377ec08e7c08eb105ef5448eced5
-    - bootnodeId=5c6d2de01b7155128cdf5148e92fb1b418c4e728d69508ccdbd0bd53c1d7c970b6cda4494a3b54148c398c38f9c6baf9d006d98a4f4268cefe85fff99afb219f
-    - bootnodeIp=172.25.0.2
-    - chainId=500005
+    - address=${EV2_PUBLIC_ADDRESS}
+    - bootnodeId=${BOOTNODE_ID}
+    - bootnodeIp=${BOOTNODE_IP}
+    - chainId=${WORKCHAIN_CHAIN_ID}
     - listenport=30306
     build:
       context: ./Docker
       dockerfile: ./validator/Dockerfile
       args:
-        privatekey: 82d052c865f5763aad42add438569276c00d3d88a2d062d36b2bae914d58b8c8
-        password: pass
+        privatekey: ${EV2_PRIVATE_KEY}
+        password: ${EV2_WALLET_PASS}
         genesis: weatherchain_genesis.json
     container_name: weatherchain_validator_2
     networks:
       weatherchainnet:
-        ipv4_address: 172.25.0.4
+        ipv4_address: ${EV2_IP}
+    volumes:
+      - ./Docker/assets:/root/assets:Z
 
   weatherchain_node_1:
     hostname: weatherchain_node_1
     depends_on:
     - weatherchain_validator_1
     environment:
-    - address=0x0f4f2ac550a1b4e2280d04c21cea7ebd822934b5
-    - bootnodeId=5c6d2de01b7155128cdf5148e92fb1b418c4e728d69508ccdbd0bd53c1d7c970b6cda4494a3b54148c398c38f9c6baf9d006d98a4f4268cefe85fff99afb219f
-    - bootnodeIp=172.25.0.2
-    - chainId=500005
+    - address=${RPC_NODE_PUBLIC_ADDRESS}
+    - bootnodeId=${BOOTNODE_ID}
+    - bootnodeIp=${BOOTNODE_IP}
+    - chainId=${WORKCHAIN_CHAIN_ID}
     - listenport=30307
+    - rpcport=${WORKCHAIN_RPC_PORT}
     build:
       context: ./Docker
       dockerfile: ./node/Dockerfile
       args:
-        privatekey: aa3680d5d48a8283413f7a108367c7299ca73f553735860a87b08f39395618b7
-        password: pass
+        privatekey: ${RPC_NODE_PRIVATE_KEY}
+        password: ${RPC_NODE_WALLET_PASS}
         genesis: weatherchain_genesis.json
     container_name: weatherchain_node_1
     ports:
-    - 8547:8547
+    - ${WORKCHAIN_RPC_PORT}:${WORKCHAIN_RPC_PORT}
     networks:
       weatherchainnet:
-        ipv4_address: 172.25.0.5
+        ipv4_address: ${WORKCHAIN_RPC_HOST}
+    volumes:
+      - ./Docker/assets:/root/assets:Z
 
   weatherchain_explorer:
     hostname: weatherchain_explorer
     depends_on:
     - weatherchain_node_1
+    environment:
+    - rpcport=${WORKCHAIN_RPC_PORT}
     ports:
     - 8081:8081
     build:
@@ -91,7 +102,9 @@ services:
     container_name: weatherchain_explorer
     networks:
       weatherchainnet:
-        ipv4_address: 172.25.0.6
+        ipv4_address: ${WORKCHAIN_EXPLORER_IP}
+    volumes:
+      - ./Docker/assets:/root/assets:Z
 
   weather_service:
     hostname: weather_service
@@ -103,7 +116,9 @@ services:
     container_name: weather_service
     networks:
       weatherchainnet:
-        ipv4_address: 172.25.0.7
+        ipv4_address: ${WEATHER_SERVICE_IP}
+    volumes:
+      - ./Docker/assets:/root/assets:Z
 
   weatherchain_root_sc:
     hostname: weatherchain_root_sc
@@ -115,9 +130,11 @@ services:
     container_name: weatherchain_root_sc
     networks:
       weatherchainnet:
-        ipv4_address: 172.25.0.8
+        ipv4_address: ${WEATHERCHAIN_ROOT_SC_IP}
       mainchain:
         ipv4_address: 192.168.43.124
+    volumes:
+      - ./Docker/assets:/root/assets:Z
 
   weatherchain_oracle:
     hostname: weatherchain_oracle
@@ -129,16 +146,19 @@ services:
     container_name: weatherchain_oracle
     networks:
       weatherchainnet:
-        ipv4_address: 172.25.0.9
+        ipv4_address: ${WEATHERCHAIN_ORACLE_IP}
       mainchain:
         ipv4_address: 192.168.43.125
+    volumes:
+      - ./Docker/assets:/root/assets:Z
 
 networks:
   weatherchainnet:
     driver: bridge
     ipam:
       config:
-      - subnet: 172.25.0.0/24
+      - subnet: ${NETWORK_SUBNET}
   mainchain:
     external:
       name: mainchain_chainnet
+
