@@ -12,8 +12,8 @@ ARG binary
 RUN apt-get update \
      && apt-get install -y ethereum
 
-COPY ./assets/bootnode.key /root/bootnode.key
+COPY ./assets/bootnode.key /root/assets/bootnode.key
 
-CMD exec bootnode -nodekey /root/bootnode.key -verbosity 4 --addr :30304
+CMD exec bootnode -nodekey /root/assets/bootnode.key -verbosity 4 --addr :30304
 
 EXPOSE 30304/udp

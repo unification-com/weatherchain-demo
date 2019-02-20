@@ -12,4 +12,4 @@ RUN truffle compile
 WORKDIR /root/workchain_root_sc
 
 CMD cd /root/workchain_root_sc && truffle migrate --reset 2>&1 | tee log.txt \
-    && tail -f /dev/null
+    && ls -l ./build/contracts/ && node abi.js addr 12345 > /root/assets/addr
