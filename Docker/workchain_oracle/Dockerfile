@@ -51,5 +51,10 @@ ENV PATH="/usr/local/go/bin:/root/.go/bin:${PATH}"
 COPY ./assets/.bashrc /root/.bashrc
 
 RUN echo "clear; clean; work" >> /root/.bash_history && \
-    echo 'go run /root/.go/src/github.com/unification-com/haiku-core/oracle/oracle.go "https://mainnet.infura.io" "http://ganachecli:8545" "6cbed15c793ce57650b9877cf6fa156fbef513c4e6134f022a85b1ffdd59b2a1" "0xC89Ce4735882C9F0f0FE26686c53074E09B0D550" 60' >> /root/.bash_history && \
+    echo "cd /root/.go/src/github.com/unification-com/haiku-core && git checkout go_oracle" >> /root/.bash_history && \
+    echo 'go run /root/.go/src/github.com/unification-com/haiku-core/oracle/oracle.go "http://172.25.0.5:8547" "http://192.168.43.20:8545" "659cbb0e2411a44db63778987b1e22153c086a95eb6b18bdf89de078917abc63" "0x345cA3e014Aaf5dcA488057592ee47305D9B3e10" 10 500005' >> /root/.bash_history && \
     echo "alias ll='ls -la'" >> /root/.bashrc
+
+CMD cd /root/.go/src/github.com/unification-com/haiku-core && \
+    git checkout go_oracle && sleep 60s && \
+    go run /root/.go/src/github.com/unification-com/haiku-core/oracle/oracle.go "http://172.25.0.5:8547" "http://192.168.43.20:8545" "659cbb0e2411a44db63778987b1e22153c086a95eb6b18bdf89de078917abc63" "0x345cA3e014Aaf5dcA488057592ee47305D9B3e10" 10 500005 2>&1 | tee log.txt
