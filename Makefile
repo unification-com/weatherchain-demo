@@ -43,15 +43,7 @@ info:
 	@echo "WORKCHAIN_ROOT_SC_SRC_DIR     : $(WORKCHAIN_ROOT_SC_SRC_DIR)"
 	@echo "WORKCHAIN_ORACLE_SRC_DIR      : $(WORKCHAIN_ORACLE_SRC_DIR)"
 
-# Delete the Docker/assets/mainchain dir
-clean-local-assets:
-	@rm -rf $(WORKCHAIN_ASSETS_DIR)/workchain_root_sc
-	@rm -rf $(WORKCHAIN_ASSETS_DIR)/workchain_oracle
-
-copy-local-assets:
-	@rsync -azh --exclude '.git*' --exclude 'build' --exclude '.idea' --exclude 'node_modules' $(WORKCHAIN_ROOT_SC_SRC_DIR) $(WORKCHAIN_ASSETS_DIR)/
-	@rsync -azh --exclude '.git*' --exclude 'build' --exclude '.idea' --exclude 'node_modules' $(WORKCHAIN_ORACLE_SRC_DIR) $(WORKCHAIN_ASSETS_DIR)/
-
 prep:
-	$(MAKE) clean-local-assets
-	$(MAKE) copy-local-assets
+	@cp $(ROOT_DIR)/weatherchain.example.env $(ROOT_DIR)/Docker/assets/weatherchain.env
+	@cd $(ROOT_DIR)/Docker && docker build -f workchain_root_sc/Dockerfile -t weatherchain_root_sc .
+	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets --ip 192.168.43.124 --network mainchain_chainnet weatherchain_root_sc

@@ -120,22 +120,6 @@ services:
     volumes:
       - ./Docker/assets:/root/assets:Z
 
-  weatherchain_root_sc:
-    hostname: weatherchain_root_sc
-    depends_on:
-    - weather_service
-    build:
-      context: ./Docker
-      dockerfile: ./workchain_root_sc/Dockerfile
-    container_name: weatherchain_root_sc
-    networks:
-      weatherchainnet:
-        ipv4_address: ${WEATHERCHAIN_ROOT_SC_IP}
-      mainchain:
-        ipv4_address: 192.168.43.124
-    volumes:
-      - ./Docker/assets:/root/assets:Z
-
   weatherchain_oracle:
     hostname: weatherchain_oracle
     depends_on:
