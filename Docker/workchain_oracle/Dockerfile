@@ -30,9 +30,15 @@ RUN apt-get install -y software-properties-common
 ENV PATH="/usr/local/go/bin:/root/.go/bin:${PATH}"
 
 RUN echo "clear; clean; work" >> /root/.bash_history && \
-    echo 'go run /root/.go/src/github.com/unification-com/oracle/oracle.go "http://172.25.0.5:8547" "http://192.168.43.20:8545" "659cbb0e2411a44db63778987b1e22153c086a95eb6b18bdf89de078917abc63" "0x345cA3e014Aaf5dcA488057592ee47305D9B3e10" 10 500005' >> /root/.bash_history && \
     echo "alias ll='ls -la'" >> /root/.bashrc
 
 COPY ./assets/oracle /root/.go/src/github.com/unification-com/oracle
 
-CMD go run /root/.go/src/github.com/unification-com/oracle/oracle.go "http://172.25.0.5:8547" "http://192.168.43.20:8545" "659cbb0e2411a44db63778987b1e22153c086a95eb6b18bdf89de078917abc63" "0x345cA3e014Aaf5dcA488057592ee47305D9B3e10" 10 500005 2>&1 | tee /root/oracle_log.txt
+ENV mainchain_rpc=""
+ENV workchain_rpc=""
+ENV private_key=""
+ENV workchain_root_address=""
+ENV timeout=""
+ENV workchain_chain_id=""
+
+CMD go run /root/.go/src/github.com/unification-com/oracle/oracle.go "$workchain_rpc" "$mainchain_rpc" "$private_key" "$workchain_root_address" $timeout $workchain_chain_id 2>&1 | tee /root/oracle_log.txt

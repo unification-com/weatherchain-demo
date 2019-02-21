@@ -44,6 +44,10 @@ info:
 	@echo "WORKCHAIN_ORACLE_SRC_DIR      : $(WORKCHAIN_ORACLE_SRC_DIR)"
 
 prep:
+	@rm $(ROOT_DIR)/.env
+    # Copy user configured weatherchain.example.env to assets, so builders can modify
 	@cp $(ROOT_DIR)/weatherchain.example.env $(ROOT_DIR)/Docker/assets/weatherchain.env
 	@cd $(ROOT_DIR)/Docker && docker build -f workchain_root_sc/Dockerfile -t weatherchain_root_sc .
 	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets --ip 192.168.43.124 --network mainchain_chainnet weatherchain_root_sc
+	# Copy generated .env to root dir so compose can access values
+	@cp $(ROOT_DIR)/Docker/assets/weatherchain.env $(ROOT_DIR)/.env
