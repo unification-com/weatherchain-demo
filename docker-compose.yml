@@ -117,8 +117,6 @@ services:
     networks:
       weatherchainnet:
         ipv4_address: ${WEATHER_SERVICE_IP}
-    volumes:
-      - ./Docker/assets:/root/assets:Z
 
   weatherchain_oracle:
     hostname: weatherchain_oracle
