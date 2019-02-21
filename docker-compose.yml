@@ -131,7 +131,7 @@ services:
     - workchain_rpc=${WORKCHAIN_WEB3_PROVIDER_URL}
     - private_key=${EV1_PRIVATE_KEY}
     - workchain_root_address=${WORKCHAIN_ROOT_CONTRACT_ADDRESS}
-    - timeout=${TIMEOUT}
+    - timeout=${WORKCHAIN_ROOT_WRITE_TIMEOUT}
     - workchain_chain_id=${WORKCHAIN_NETWORK_ID}
     networks:
       weatherchainnet:
