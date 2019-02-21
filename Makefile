@@ -3,8 +3,6 @@
 # Set some variables
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 WORKCHAIN_ASSETS_DIR:=$(ROOT_DIR)/Docker/assets
-WORKCHAIN_ROOT_SC_SRC_DIR:=$(shell realpath $(ROOT_DIR)/../../workchain_root_sc)
-WORKCHAIN_ORACLE_SRC_DIR:=$(shell realpath $(ROOT_DIR)/../../workchain_oracle)
 
 # Build and run static Docker environment.
 all:
@@ -40,8 +38,6 @@ down:
 info:
 	@echo "ROOT_DIR                      : $(ROOT_DIR)"
 	@echo "WORKCHAIN_ASSETS_DIR          : $(WORKCHAIN_ASSETS_DIR)"
-	@echo "WORKCHAIN_ROOT_SC_SRC_DIR     : $(WORKCHAIN_ROOT_SC_SRC_DIR)"
-	@echo "WORKCHAIN_ORACLE_SRC_DIR      : $(WORKCHAIN_ORACLE_SRC_DIR)"
 
 prep:
 	@rm $(ROOT_DIR)/.env
