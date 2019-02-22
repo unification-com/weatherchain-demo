@@ -21,7 +21,7 @@ services:
     - address=${EV1_PUBLIC_ADDRESS}
     - bootnodeId=${BOOTNODE_ID}
     - bootnodeIp=${BOOTNODE_IP}
-    - chainId=${WORKCHAIN_CHAIN_ID}
+    - chainId=${WORKCHAIN_NETWORK_ID}
     - listenport=30305
     build:
       context: ./Docker
@@ -45,7 +45,7 @@ services:
     - address=${EV2_PUBLIC_ADDRESS}
     - bootnodeId=${BOOTNODE_ID}
     - bootnodeIp=${BOOTNODE_IP}
-    - chainId=${WORKCHAIN_CHAIN_ID}
+    - chainId=${WORKCHAIN_NETWORK_ID}
     - listenport=30306
     build:
       context: ./Docker
@@ -69,7 +69,7 @@ services:
     - address=${RPC_NODE_PUBLIC_ADDRESS}
     - bootnodeId=${BOOTNODE_ID}
     - bootnodeIp=${BOOTNODE_IP}
-    - chainId=${WORKCHAIN_CHAIN_ID}
+    - chainId=${WORKCHAIN_NETWORK_ID}
     - listenport=30307
     - rpcport=${WORKCHAIN_RPC_PORT}
     build:
