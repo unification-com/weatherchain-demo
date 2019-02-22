@@ -107,6 +107,8 @@ services:
     networks:
       weatherchainnet:
         ipv4_address: ${WEATHER_SERVICE_IP}
+      mainchain:
+        ipv4_address: 192.168.43.126
 
   weatherchain_oracle:
     hostname: weatherchain_oracle
