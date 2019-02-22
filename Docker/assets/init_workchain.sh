@@ -14,6 +14,7 @@ WORKCHAIN_RPC_PORT=$(grep 'WORKCHAIN_RPC_PORT' /root/assets/weatherchain.env)
 #Generate bootnode key
 /root/.go/bin/bootnode -genkey /root/assets/bootnode.key
 BOOTNODE_ID=$(/root/.go/bin/bootnode -nodekey /root/assets/bootnode.key -writeaddress)
+chmod +rw /root/assets/bootnode.key
 sed -i "s/BOOTNODE_ID=/BOOTNODE_ID=$BOOTNODE_ID/g" /root/assets/weatherchain.env
 
 # Write Workchain's Web3 provider to .env
