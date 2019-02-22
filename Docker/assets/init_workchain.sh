@@ -8,6 +8,15 @@ CHAIN_ID=$(od -N 4 -t uL -An /dev/urandom | tr -d " ")
 # generate a unique wallet mnemonic
 MNEMONIC=$(node init.js mnemonic)
 
+WORKCHAIN_RPC_HOST=$(grep 'WORKCHAIN_RPC_HOST' /root/assets/weatherchain.env)
+WORKCHAIN_RPC_PORT=$(grep 'WORKCHAIN_RPC_PORT' /root/assets/weatherchain.env)
+
+echo ${WORKCHAIN_RPC_HOST##*=}
+echo ${WORKCHAIN_RPC_PORT##*=}
+
+# Write Workchain's Web3 provider to .env
+sed -i "s/WORKCHAIN_WEB3_PROVIDER_URL=/WORKCHAIN_WEB3_PROVIDER_URL=http:\/\/${WORKCHAIN_RPC_HOST##*=}:${WORKCHAIN_RPC_PORT##*=}/g" /root/assets/weatherchain.env
+
 # Write Mnemonic to .env
 sed -i "s/MNEMONIC=/MNEMONIC=$MNEMONIC/g" /root/assets/weatherchain.env
 
