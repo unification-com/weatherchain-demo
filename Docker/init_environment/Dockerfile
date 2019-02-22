@@ -1,5 +1,28 @@
 FROM node:latest
 
+RUN apt-get update && \
+    apt-get -y install \
+        git \
+        make build-essential
+
+WORKDIR "/root"
+
+RUN wget https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.10.3.linux-amd64.tar.gz && \
+    mkdir ~/.go
+
+ENV GOPATH="/root/.go"
+ENV GOROOT="/usr/local/go"
+ENV PATH="/usr/local/go/bin:${PATH}"
+
+RUN mkdir /root/.ssh && \
+    mkdir -p ${GOPATH}/src/github.com/unification-com
+
+RUN cd ${GOPATH}/src/github.com/unification-com && \
+    git clone https://github.com/unification-com/mainchain.git
+
+RUN go install github.com/unification-com/mainchain/cmd/bootnode
+
 COPY ./assets/workchain_root_sc /root/workchain_root_sc
 COPY ./assets/init /root/init
 COPY ./assets/init_workchain.sh /root/init_workchain.sh
@@ -16,7 +39,3 @@ RUN npm install -g truffle
 RUN npm install
 
 CMD cd /root && ./init_workchain.sh
-
-#CMD cd /root/workchain_root_sc && truffle migrate --reset \
-#    && sed -i "s/WORKCHAIN_ROOT_CONTRACT_ADDRESS=/WORKCHAIN_ROOT_CONTRACT_ADDRESS=$(node abi.js addr 12345)/g" /root/assets/weatherchain.env \
-#    && sed -i "s/WORKCHAIN_ROOT_ABI=/WORKCHAIN_ROOT_ABI=$(node abi.js)/g" /root/assets/weatherchain.env

@@ -11,8 +11,10 @@ MNEMONIC=$(node init.js mnemonic)
 WORKCHAIN_RPC_HOST=$(grep 'WORKCHAIN_RPC_HOST' /root/assets/weatherchain.env)
 WORKCHAIN_RPC_PORT=$(grep 'WORKCHAIN_RPC_PORT' /root/assets/weatherchain.env)
 
-echo ${WORKCHAIN_RPC_HOST##*=}
-echo ${WORKCHAIN_RPC_PORT##*=}
+#Generate bootnode key
+/root/.go/bin/bootnode -genkey /root/assets/bootnode.key
+BOOTNODE_ID=$(/root/.go/bin/bootnode -nodekey /root/assets/bootnode.key -writeaddress)
+sed -i "s/BOOTNODE_ID=/BOOTNODE_ID=$BOOTNODE_ID/g" /root/assets/weatherchain.env
 
 # Write Workchain's Web3 provider to .env
 sed -i "s/WORKCHAIN_WEB3_PROVIDER_URL=/WORKCHAIN_WEB3_PROVIDER_URL=http:\/\/${WORKCHAIN_RPC_HOST##*=}:${WORKCHAIN_RPC_PORT##*=}/g" /root/assets/weatherchain.env
