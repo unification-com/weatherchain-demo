@@ -25,8 +25,9 @@ init:
 
 # Build deployment Docker environment.
 build:
-	test -s $(ROOT_DIR)/.env || { echo "$(ROOT_DIR)/.env does not exist. Run make init! Exiting..."; exit 1; }
+	test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n\nfirst. Exiting...\n"; exit 1; }
 	docker-compose build
+
 
 # Build, no cache
 build-nc:
@@ -34,6 +35,7 @@ build-nc:
 
 # Run deployment Docker environment.
 run:
+	test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n  make build\n\nfirst. Exiting...\n"; exit 1; }
 	docker-compose down --remove-orphans
 	docker-compose up
 
