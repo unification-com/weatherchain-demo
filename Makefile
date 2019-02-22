@@ -11,13 +11,10 @@ all:
 
 # Build deployment Docker environment.
 build:
-	$(MAKE) info
-	$(MAKE) init
 	docker-compose build
 
 # Build, no cache
 build-nc:
-	$(MAKE) prep
 	docker-compose build --no-cache
 
 # Run deployment Docker environment.
@@ -32,7 +29,6 @@ run-log:
 # Bring deployment Docker environment down
 down:
 	docker-compose down --remove-orphans
-	$(MAKE) clean-local-assets
 
 # Output some useful info
 info:
@@ -40,9 +36,16 @@ info:
 	@echo "WORKCHAIN_ASSETS_DIR          : $(WORKCHAIN_ASSETS_DIR)"
 
 init:
-    # Copy user configured weatherchain.example.env to assets, so builders can modify
-	@cp $(ROOT_DIR)/weatherchain.example.env $(ROOT_DIR)/Docker/assets/.env
+	$(MAKE) info
+	$(MAKE) clean
+	# Copy user configured weatherchain.example.env to assets, so builders can modify
+	@cp $(ROOT_DIR)/weatherchain.example.env $(WORKCHAIN_ASSETS_DIR)/.env
 	@cd $(ROOT_DIR)/Docker && docker build -f init_environment/Dockerfile -t init_weatherchain_environment .
 	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets --ip 192.168.43.124 --network mainchain_chainnet init_weatherchain_environment
 	# Copy generated .env to root dir so compose can access values
-	@cp $(ROOT_DIR)/Docker/assets/.env $(ROOT_DIR)/.env
+	@cp $(WORKCHAIN_ASSETS_DIR)/.env $(ROOT_DIR)/.env
+
+clean:
+	@rm -f $(WORKCHAIN_ASSETS_DIR)/.env
+	@rm -f $(WORKCHAIN_ASSETS_DIR)/bootnode.key
+	@rm -f $(WORKCHAIN_ASSETS_DIR)/weatherchain_genesis.json
