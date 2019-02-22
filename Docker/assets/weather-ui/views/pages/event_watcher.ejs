@@ -31,7 +31,7 @@
     <!-- Begin page content -->
     <main role="main" class="container">
         <br>
-    <h1 class="mt-5">Latest Block recorded on Mainchain</h1>
+    <h1 class="mt-5">Latest Weatherchain Block recorded on Mainchain</h1>
     <p class="lead">
         Block #: <span id="block_num"></span><br>
         Current Time: <span id="block_time"></span><br>
@@ -75,7 +75,7 @@
         updateWatcher();
         setInterval(function(){
             updateWatcher();
-         }, 1000);
+         }, 10000);
 
          function updateWatcher() {
              workchainEventWatcher.getLatestRecordedHeader(function(results) {

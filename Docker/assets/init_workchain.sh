@@ -86,5 +86,37 @@ MAINCHAIN_NETWORK_ID=$(grep 'MAINCHAIN_NETWORK_ID' /root/assets/.env)
 cd /root/workchain_root_sc
 truffle compile
 truffle migrate --reset
-sed -i "s/WORKCHAIN_ROOT_CONTRACT_ADDRESS=/WORKCHAIN_ROOT_CONTRACT_ADDRESS=$(node abi.js addr ${MAINCHAIN_NETWORK_ID##*=})/g" /root/assets/.env
+WORKCHAIN_ROOT_CONTRACT_ADDRESS=$(node abi.js addr ${MAINCHAIN_NETWORK_ID##*=})
+sed -i "s/WORKCHAIN_ROOT_CONTRACT_ADDRESS=/WORKCHAIN_ROOT_CONTRACT_ADDRESS=${WORKCHAIN_ROOT_CONTRACT_ADDRESS}/g" /root/assets/.env
 sed -i "s/WORKCHAIN_ROOT_ABI=/WORKCHAIN_ROOT_ABI=$(node abi.js)/g" /root/assets/.env
+
+echo "======================================="
+echo "= ENVIRONMENT INITIALISATION COMPLETE ="
+echo "======================================="
+echo ""
+echo "EV1"
+echo "---"
+echo "Public address: ${EV1_PUBLIC_ADDRESS}"
+echo "Private Key: ${EV1_PRIVATE_KEY}"
+echo ""
+echo "EV2"
+echo "---"
+echo "Public address: ${EV2_PUBLIC_ADDRESS}"
+echo "Private Key: ${EV2_PRIVATE_KEY}"
+echo ""
+echo "RPC Node"
+echo "--------"
+echo "Public address: ${RPC_NODE_PUBLIC_ADDRESS}"
+echo "Private Key: ${RPC_NODE_PRIVATE_KEY}"
+echo ""
+echo "Generated Wallet Mnemonic: ${MNEMONIC}"
+echo ""
+echo "(Wallets will work on both Mainchain and Weatherchain)"
+echo ""
+echo "Workchain Network ID: ${CHAIN_ID}"
+echo "Workchain Root smart contract address on Mainchain: ${WORKCHAIN_ROOT_CONTRACT_ADDRESS}"
+echo ""
+echo "now run:"
+echo ""
+echo "  make build"
+echo ""

@@ -27,6 +27,7 @@ init:
 build:
 	test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n\nfirst. Exiting...\n"; exit 1; }
 	docker-compose build
+	@echo "\nDone. Now run:\n\n  make run\n"
 
 
 # Build, no cache
