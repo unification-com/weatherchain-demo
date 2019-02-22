@@ -14,18 +14,30 @@ to its WorkchainRoot smart contract on Mainchain.
 Ensure Mainchain is running:
 
 1) `cd ../mainchain`
-2) `make build-custom`
-3) `make run-custom`
+2) `make build`
+3) `make run`
 
 Once Mainchain is up and running, from this directory run:
 
-1) `make build`
-2) `make run`
+1) `make init`
+2) `make build`
+3) `make run`
 
+## Viewing Weatherchain info
+
+### Block explorer
 Weatherchain's blocks can be viewed via http://172.25.0.6:8081
 
+### Weatherchain UI
 Weatherchain also has a simple UI for watching the Weather Service smart contract,
  and verifying blocks with the Mainchain: http://172.25.0.7:4040/
+ 
+http://172.25.0.7:4040/ - this is just a simple interface to display WEather data that is being sent
+to the Weather smart contract on Weatherchain  
+http://172.25.0.7:4040/watch - Watches the Workchain Root smart contract on Mainchain for 
+Weatherchain's block hash deposits  
+http://172.25.0.7:4040/validate - Validate one of Weatherchain's blocks against the hashes
+stored in its Workchain Root smart contract on Mainchain
 
 ### Bringing it down
 
@@ -35,7 +47,7 @@ First, bring down the Weatherchain composition, which has a network dependency:
 
 Then, from the Mainchain directory, bring down the mainchain composition:
 
-`make down-custom`
+`make down`
 
 ## Docker containers
 
@@ -46,19 +58,27 @@ Then, from the Mainchain directory, bring down the mainchain composition:
 `weatherchain_explorer`: Weatherchain's own block explorer. Runs on http://172.25.0.6:8081  
 `weatherchain_oracle`: Weatherchain's Workchain Oracle. Reads Weatherchain's block headers and sends them to its
 WorkchainRoot smart contract on Mainchain. Posts Txs to Mainchain on http://192.168.43.20:8545  
-`weatherchain_root_sc`: Runs to deply Weatherchain's WorkchainRoot smart contract on Mainchain
 `weather_service`: Deploys a simple smart contract to store weather data on Weatherchain. Runs a simple
 oracle service to read weather from api.openweathermap.org, and write it to the smart contract.
+`init_weatherchain_environment`: Initialises the Workchains environment. Only run during `make init`
+
+## Init notes
+
+`make init` will initialise a unique environment for the Weatherchain demo. It will generate the
+necessary genesis block, chain ID, and wallets required to run the demo.
+
+Initialisation calls the Mainchain Faucet to fund the Workchain's addresses with UND
+so that the workchain can deposit hashes to its Workchain Root smart contract.
+
+The faucet can be monitored in:
+
+`docker exec -it faucet /bin/bash`
+
+and within the container, running:
+
+`tail -f faucet_log.txt`
 
 ## Account notes
 
-The Weatherhain demo uses the same standard Test-RPC Mnemonic as Mainchain for its test accounts - `candy maple cake sugar pudding cream honey rich smooth crumble sweet treat`
-
-The following addresses are used by Weatherchain:
-
-`0x2932b7a2355d6fecc4b5c0b6bd44cc31df247a2e` (address[5]) - runs `weatherchain_validator_1`. Loaded with 1000 UND on Mainchain
-and also 1000 RAIN (Weatherchain's own native coin) on Weatherchain
-`0x2191ef87e392377ec08e7c08eb105ef5448eced5` (address[6]) - runs `weatherchain_validator_2`. Loaded with 1000 UND on Mainchain
-and also 1000 RAIN (Weatherchain's own native coin) on Weatherchain
-`0x0f4f2ac550a1b4e2280d04c21cea7ebd822934b5` (address[7]) - runs `weatherchain_node_1`. Loaded with 1000 RAIN (Weatherchain's own native coin) on Weatherchain.
-This address is also used by `weather_service` to write weather data to its smart contract.
+The Weatherhain demo generates accounts, and smart contract addresses during the `make init` target.
+The Mnemonic, and associated addresses and keys can be viewed in `Docker/assets/.env`
