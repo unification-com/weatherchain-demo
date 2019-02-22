@@ -6,6 +6,9 @@ COPY ./assets/weather-oracle-service /root/weather-oracle-service
 COPY ./assets/.env /root/weather-oracle-service/.env
 COPY ./assets/weather-ui /root/weather-ui
 COPY ./assets/.env /root/weather-ui/.env
+COPY ./assets/deploy_weather_service.sh /root/deploy_weather_service.sh
+
+RUN chmod +x /root/deploy_weather_service.sh
 
 WORKDIR /root/weather-oracle-contract
 
@@ -19,8 +22,6 @@ RUN npm install
 WORKDIR /root/weather-ui
 RUN npm install
 
-CMD cd /root/weather-oracle-contract && truffle migrate --reset 2>&1 | tee sc_log.txt \
-    && cd /root/weather-oracle-service && npm run develop 2>&1 | tee service_log.txt \
-    & cd /root/weather-ui && node server.js
+CMD cd /root && ./deploy_weather_service.sh
 
 #EXPOSE 4040

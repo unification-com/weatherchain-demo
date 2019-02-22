@@ -1,10 +1,17 @@
 pragma solidity 0.5.0;
 
 contract WeatherOracle {
-  address public oracleAddress;
+  mapping(address => bool) oracleAddresses;
 
-  constructor (address _oracleAddress) public {
-    oracleAddress = _oracleAddress;
+  modifier onlyOracle() {
+      require(oracleAddresses[msg.sender] == true);
+      _;
+  }
+
+  constructor (address[] memory _oracleAddresses) public {
+    for (uint i=0; i<_oracleAddresses.length; i++) {
+        oracleAddresses[_oracleAddresses[i]] = true;
+    }
   }
 
   event WeatherUpdate (
@@ -12,9 +19,9 @@ contract WeatherOracle {
     string temperature,
     string humidity,
     string visibility,
-    string windSpeed,
-    string windDirection,
-    string windGust
+    string pressure,
+    string sunrise,
+    string sunset
   );
 
   function updateWeather (
@@ -22,23 +29,20 @@ contract WeatherOracle {
     string memory temperature,
     string memory humidity,
     string memory visibility,
-    string memory windSpeed,
-    string memory windDirection,
-    string memory windGust
+    string memory pressure,
+    string memory sunrise,
+    string memory sunset
   )
-  public
+  public onlyOracle
   {
-    require(msg.sender == oracleAddress);
-
-
     emit WeatherUpdate (
       weatherDescription,
       temperature,
       humidity,
       visibility,
-      windSpeed,
-      windDirection,
-      windGust
+      pressure,
+      sunrise,
+      sunset
     );
   }
 }

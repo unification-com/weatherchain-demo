@@ -40,9 +40,9 @@
         Temperature: <span id="temperature"></span><br>
         Humidity: <span id="humidity"></span><br>
         Visibility: <span id="visibility"></span><br>
-        Wind Direction: <span id="windDirection"></span><br>
-        Wind Gust: <span id="windGust"></span><br>
-        Wind Speed: <span id="windSpeed"></span><br>
+        Pressure: <span id="pressure"></span><br>
+        Sunrise: <span id="sunrise"></span><br>
+        Sunset: <span id="sunset"></span><br>
     </p>
 
     </main>
@@ -91,9 +91,9 @@
                 $('#temperature').text(data.returnValues.temperature);
                 $('#humidity').text(data.returnValues.humidity);
                 $('#visibility').text(data.returnValues.visibility);
-                $('#windDirection').text(data.returnValues.windDirection);
-                $('#windGust').text(data.returnValues.windGust);
-                $('#windSpeed').text(data.returnValues.windSpeed);
+                $('#pressure').text(data.returnValues.pressure);
+                $('#sunrise').text(data.returnValues.sunrise);
+                $('#sunset').text(data.returnValues.sunset);
             });
          }
 

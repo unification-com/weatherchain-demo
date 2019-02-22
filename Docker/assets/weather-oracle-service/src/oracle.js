@@ -16,20 +16,20 @@ const start = () => {
 
 const parseData = (body) => {
   return new Promise((resolve, reject) => {
-    let weatherDescription, temperature, humidity, visibility, windSpeed, windDirection, windGust;
+    let weatherDescription, temperature, humidity, visibility, pressure, sunrise, sunset;
     try {
       weatherDescription = body.weather[0].description.toString();
       temperature = body.main.temp.toString();
       humidity = body.main.humidity.toString();
       visibility = body.visibility.toString();
-      windSpeed = body.wind.speed.toString();
-      windDirection = body.wind.deg.toString();
-      windGust = (body.wind.gust || 0).toString();
+      pressure = body.main.pressure.toString();
+      sunrise = body.sys.sunrise.toString();
+      sunset = (body.sys.sunset || 0).toString();
     } catch(error) {
       reject(error);
       return;
     }
-    resolve({ weatherDescription, temperature, humidity, visibility, windSpeed, windDirection, windGust });
+    resolve({ weatherDescription, temperature, humidity, visibility, pressure, sunrise, sunset });
   });
 };
 
