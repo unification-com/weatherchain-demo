@@ -17,6 +17,9 @@ Ensure Mainchain is running:
 2) `make build`
 3) `make run`
 
+**Important**: if the IPs for Mainchain have been modified, they will need updating in 
+`weatherchain.test.env`
+
 Once Mainchain is up and running, from this directory run:
 
 1) `make init`
@@ -57,7 +60,7 @@ Then, from the Mainchain directory, bring down the mainchain composition:
 
 ## Docker containers
 
-`weatherchain_bootnode`: Weatherchain's own bootnode. Listening on port `30304  ` 
+`weatherchain_bootnode`: Weatherchain's own bootnode. Listening on port `30304  `  
 `weatherchain_validator_1`: A Weatherhcain validator node. Listening on port `30305`  
 `weatherchain_validator_2`: A 2nd Weatherchain validator node. Listening on port `30306`  
 `weatherchain_node_1`: Weatherchain's RPC API node, for sending Txs. Runs on http://172.25.0.5:8547  
@@ -65,8 +68,9 @@ Then, from the Mainchain directory, bring down the mainchain composition:
 `weatherchain_oracle`: Weatherchain's Workchain Oracle. Reads Weatherchain's block headers and sends them to its
 WorkchainRoot smart contract on Mainchain. Posts Txs to Mainchain on http://192.168.43.20:8545  
 `weather_service`: Deploys a simple smart contract to store weather data on Weatherchain. Runs a simple
-oracle service to read weather from api.openweathermap.org, and write it to the smart contract.
-`init_weatherchain_environment`: Initialises the Workchains environment. Only run during `make init`
+oracle service to read weather from api.openweathermap.org, and write it to the smart contract.  
+`init_weatherchain_environment`: Initialises the Weatherchain's environment.
+Only run during the `make init` target.
 
 ## Init notes
 
