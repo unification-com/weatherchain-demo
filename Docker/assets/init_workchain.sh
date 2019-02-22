@@ -2,6 +2,8 @@
 
 cd /root/init
 
+cat /root/init/autogen.env >> /root/assets/.env
+
 # Generate a unique workchain ID
 CHAIN_ID=$(od -N 4 -t uL -An /dev/urandom | tr -d " ")
 

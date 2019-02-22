@@ -25,6 +25,7 @@ init:
 
 # Build deployment Docker environment.
 build:
+	test -s $(ROOT_DIR)/.env || { echo "$(ROOT_DIR)/.env does not exist. Run make init! Exiting..."; exit 1; }
 	docker-compose build
 
 # Build, no cache
@@ -43,6 +44,7 @@ run-log:
 # Bring deployment Docker environment down
 down:
 	docker-compose down --remove-orphans
+	$(MAKE) clean
 
 init-prepare:
 	$(MAKE) info
@@ -60,6 +62,7 @@ info:
 	@echo "WORKCHAIN_ASSETS_DIR          : $(WORKCHAIN_ASSETS_DIR)"
 
 clean:
+	@rm -f $(ROOT_DIR)/.env
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/.env
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/bootnode.key
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/weatherchain_genesis.json

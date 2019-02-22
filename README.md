@@ -23,7 +23,13 @@ Once Mainchain is up and running, from this directory run:
 2) `make build`
 3) `make run`
 
+**Please note:** you'll need to bring the system down using `make down` before attempting to run
+it again. This will mean re-running the `init` and `build` scripts.
+
 ## Viewing Weatherchain info
+
+You'll need to wait a minute or so for the environment to start running, and for the Weatherchain UI
+to start up.
 
 ### Block explorer
 Weatherchain's blocks can be viewed via http://172.25.0.6:8081
