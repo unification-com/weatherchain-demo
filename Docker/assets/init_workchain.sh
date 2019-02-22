@@ -80,8 +80,9 @@ wget -T 3 -t 1 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=$RPC_NODE_PUBLIC_ADDRE
 cp /root/assets/.env /root/workchain_root_sc/.env
 
 # Compile Workchain Root smart contract
+MAINCHAIN_NETWORK_ID=$(grep 'MAINCHAIN_NETWORK_ID' /root/assets/.env)
 cd /root/workchain_root_sc
 truffle compile
 truffle migrate --reset
-sed -i "s/WORKCHAIN_ROOT_CONTRACT_ADDRESS=/WORKCHAIN_ROOT_CONTRACT_ADDRESS=$(node abi.js addr 12345)/g" /root/assets/.env
+sed -i "s/WORKCHAIN_ROOT_CONTRACT_ADDRESS=/WORKCHAIN_ROOT_CONTRACT_ADDRESS=$(node abi.js addr ${MAINCHAIN_NETWORK_ID##*=})/g" /root/assets/.env
 sed -i "s/WORKCHAIN_ROOT_ABI=/WORKCHAIN_ROOT_ABI=$(node abi.js)/g" /root/assets/.env
