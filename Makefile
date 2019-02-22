@@ -41,8 +41,8 @@ info:
 
 init:
     # Copy user configured weatherchain.example.env to assets, so builders can modify
-	@cp $(ROOT_DIR)/weatherchain.example.env $(ROOT_DIR)/Docker/assets/weatherchain.env
+	@cp $(ROOT_DIR)/weatherchain.example.env $(ROOT_DIR)/Docker/assets/.env
 	@cd $(ROOT_DIR)/Docker && docker build -f init_environment/Dockerfile -t init_weatherchain_environment .
 	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets --ip 192.168.43.124 --network mainchain_chainnet init_weatherchain_environment
 	# Copy generated .env to root dir so compose can access values
-	@cp $(ROOT_DIR)/Docker/assets/weatherchain.env $(ROOT_DIR)/.env
+	@cp $(ROOT_DIR)/Docker/assets/.env $(ROOT_DIR)/.env

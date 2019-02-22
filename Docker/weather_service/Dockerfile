@@ -1,11 +1,11 @@
 FROM node:8
 
 COPY ./assets/weather-oracle-contract /root/weather-oracle-contract
-COPY ./assets/weatherchain.env /root/weather-oracle-contract/.env
+COPY ./assets/.env /root/weather-oracle-contract/.env
 COPY ./assets/weather-oracle-service /root/weather-oracle-service
-COPY ./assets/weatherchain.env /root/weather-oracle-service/.env
+COPY ./assets/.env /root/weather-oracle-service/.env
 COPY ./assets/weather-ui /root/weather-ui
-COPY ./assets/weatherchain.env /root/weather-ui/.env
+COPY ./assets/.env /root/weather-ui/.env
 
 WORKDIR /root/weather-oracle-contract
 
