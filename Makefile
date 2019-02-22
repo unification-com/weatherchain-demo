@@ -12,7 +12,7 @@ all:
 # Build deployment Docker environment.
 build:
 	$(MAKE) info
-	$(MAKE) prep
+	$(MAKE) init
 	docker-compose build
 
 # Build, no cache
@@ -39,11 +39,10 @@ info:
 	@echo "ROOT_DIR                      : $(ROOT_DIR)"
 	@echo "WORKCHAIN_ASSETS_DIR          : $(WORKCHAIN_ASSETS_DIR)"
 
-prep:
-	@rm $(ROOT_DIR)/.env
+init:
     # Copy user configured weatherchain.example.env to assets, so builders can modify
 	@cp $(ROOT_DIR)/weatherchain.example.env $(ROOT_DIR)/Docker/assets/weatherchain.env
-	@cd $(ROOT_DIR)/Docker && docker build -f workchain_root_sc/Dockerfile -t weatherchain_root_sc .
-	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets --ip 192.168.43.124 --network mainchain_chainnet weatherchain_root_sc
+	@cd $(ROOT_DIR)/Docker && docker build -f init_environment/Dockerfile -t init_weatherchain_environment .
+	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets --ip 192.168.43.124 --network mainchain_chainnet init_weatherchain_environment
 	# Copy generated .env to root dir so compose can access values
 	@cp $(ROOT_DIR)/Docker/assets/weatherchain.env $(ROOT_DIR)/.env
