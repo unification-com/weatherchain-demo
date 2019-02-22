@@ -10,8 +10,6 @@ services:
     networks:
       weatherchainnet:
         ipv4_address: ${BOOTNODE_IP}
-    volumes:
-      - ./Docker/assets:/root/assets:Z
 
   weatherchain_validator_1:
     hostname: weatherchain_validator_1
@@ -34,8 +32,6 @@ services:
     networks:
       weatherchainnet:
         ipv4_address: ${EV1_IP}
-    volumes:
-      - ./Docker/assets:/root/assets:Z
 
   weatherchain_validator_2:
     hostname: weatherchain_validator_2
@@ -58,8 +54,6 @@ services:
     networks:
       weatherchainnet:
         ipv4_address: ${EV2_IP}
-    volumes:
-      - ./Docker/assets:/root/assets:Z
 
   weatherchain_node_1:
     hostname: weatherchain_node_1
@@ -85,8 +79,6 @@ services:
     networks:
       weatherchainnet:
         ipv4_address: ${WORKCHAIN_RPC_HOST}
-    volumes:
-      - ./Docker/assets:/root/assets:Z
 
   weatherchain_explorer:
     hostname: weatherchain_explorer
@@ -103,8 +95,6 @@ services:
     networks:
       weatherchainnet:
         ipv4_address: ${WORKCHAIN_EXPLORER_IP}
-    volumes:
-      - ./Docker/assets:/root/assets:Z
 
   weather_service:
     hostname: weather_service
@@ -138,8 +128,6 @@ services:
         ipv4_address: ${WEATHERCHAIN_ORACLE_IP}
       mainchain:
         ipv4_address: 192.168.43.125
-    volumes:
-      - ./Docker/assets:/root/assets:Z
 
 networks:
   weatherchainnet:
