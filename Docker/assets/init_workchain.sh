@@ -53,10 +53,14 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 done < /root/assets/weatherchain_genesis.json
 
 # Fund the generated addresses on Mainchain using the faucet
-#echo "fund $EV1_PUBLIC_ADDRESS"
-#wget http://localhost:8082/sendtx?to={$EV1_PUBLIC_ADDRESS}
-#wget http://localhost:8082/sendtx?to={$EV2_PUBLIC_ADDRESS}
-#wget http://localhost:8082/sendtx?to={$RPC_NODE_PUBLIC_ADDRESS}
+echo "fund $EV1_PUBLIC_ADDRESS"
+wget -T 3 -O - http://192.168.43.99:8082/sendtx?to=$EV1_PUBLIC_ADDRESS
+sleep 6s
+echo "fund $EV2_PUBLIC_ADDRESS"
+wget -T 3 -O - http://192.168.43.99:8082/sendtx?to=$EV2_PUBLIC_ADDRESS
+sleep 6s
+echo "fund $RPC_NODE_PUBLIC_ADDRESS"
+wget -T 3 -O - http://192.168.43.99:8082/sendtx?to=$RPC_NODE_PUBLIC_ADDRESS
 
 # Copy the generated .env to the Smart Contract deployment directory
 # since it needs some values during deployment
@@ -65,9 +69,6 @@ cp /root/assets/weatherchain.env /root/workchain_root_sc/.env
 # Compile Workchain Root smart contract
 cd /root/workchain_root_sc
 truffle compile
-
-#cd /root/workchain_root_sc && truffle migrate --reset \
-#    && sed -i "s/WORKCHAIN_ROOT_CONTRACT_ADDRESS=/WORKCHAIN_ROOT_CONTRACT_ADDRESS=$(node abi.js addr 12345)/g" /root/assets/weatherchain.env \
-#    && sed -i "s/WORKCHAIN_ROOT_ABI=/WORKCHAIN_ROOT_ABI=$(node abi.js)/g" /root/assets/weatherchain.env
-
-wget http://google.com
+truffle migrate --reset
+sed -i "s/WORKCHAIN_ROOT_CONTRACT_ADDRESS=/WORKCHAIN_ROOT_CONTRACT_ADDRESS=$(node abi.js addr 12345)/g" /root/assets/weatherchain.env
+sed -i "s/WORKCHAIN_ROOT_ABI=/WORKCHAIN_ROOT_ABI=$(node abi.js)/g" /root/assets/weatherchain.env
