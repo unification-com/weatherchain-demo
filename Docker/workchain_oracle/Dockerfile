@@ -21,7 +21,6 @@ ENV PATH="/usr/local/go/bin:${PATH}"
 RUN mkdir /root/.ssh && \
     mkdir -p ${GOPATH}/src/github.com/unification-com
 
-
 RUN cd ${GOPATH}/src/github.com/unification-com && \
     git clone https://github.com/unification-com/mainchain.git
 
@@ -32,7 +31,8 @@ ENV PATH="/usr/local/go/bin:/root/.go/bin:${PATH}"
 RUN echo "clear; clean; work" >> /root/.bash_history && \
     echo "alias ll='ls -la'" >> /root/.bashrc
 
-COPY ./assets/oracle /root/.go/src/github.com/unification-com/oracle
+RUN cd ${GOPATH}/src/github.com/unification-com && \
+    git clone https://github.com/unification-com/workchain-root-oracle
 
 ENV mainchain_rpc=""
 ENV workchain_rpc=""
@@ -41,4 +41,4 @@ ENV workchain_root_address=""
 ENV timeout=""
 ENV workchain_chain_id=""
 
-CMD go run /root/.go/src/github.com/unification-com/oracle/oracle.go "$workchain_rpc" "$mainchain_rpc" "$private_key" "$workchain_root_address" $timeout $workchain_chain_id 2>&1 | tee /root/oracle_log.txt
+CMD go run /root/.go/src/github.com/unification-com/workchain-root-oracle/oracle.go "$workchain_rpc" "$mainchain_rpc" "$private_key" "$workchain_root_address" $timeout $workchain_chain_id 2>&1 | tee /root/oracle_log.txt
