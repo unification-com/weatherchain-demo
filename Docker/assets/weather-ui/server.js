@@ -40,3 +40,12 @@ app.get('/watch', function(req, res) {
 
 app.listen(4040);
 console.log('4040 is the magic port');
+
+console.log( "=====================================");
+console.log( "= WEATHER SERVICE UI READY          =");
+console.log( "= ------------------------          =");
+console.log( "=                                   =");
+console.log( "= open:                             =");
+console.log( "= http://"+process.env.WEATHER_SERVICE_IP+":4040  =");
+console.log( "=                                   =");
+console.log( "=====================================");
