@@ -1,0 +1,18 @@
+version: "3"
+services:
+  mainchain-node:
+    hostname: mainchain-node
+    environment:
+      - address=${RPC_NODE_PUBLIC_ADDRESS_MAINCHAIN}
+      - bootnodeId=c620cda7ab4c01199634d4df331812ff988a57742f920492eecb2c6075309c479c7deb5f703e8e83bb648ca1a9ba38d00afa9d934c5c99e68a1ee018e5916377 #derived from the nodekeyhex of the bootnode
+      - bootnodeIp=18.222.106.246
+      - chainId=${MAINCHAIN_NETWORK_ID}
+    build:
+      context: ./Docker
+      dockerfile: ./mainchain_rpc_node/Dockerfile
+      args:
+        privatekey: ${RPC_NODE_PRIVATE_KEY_MAINCHAIN}
+        password: ${RPC_NODE_WALLET_PASS_MAINCHAIN}
+    container_name: mainchain-node
+    ports:
+      - 8545:8545
