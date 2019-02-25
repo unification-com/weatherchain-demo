@@ -23,18 +23,20 @@ RUN cd ${GOPATH}/src/github.com/unification-com && \
 
 RUN go install github.com/unification-com/mainchain/cmd/bootnode
 
-COPY ./assets/workchain_root_sc /root/workchain_root_sc
+
 COPY ./assets/init /root/init
 COPY ./assets/init_workchain.sh /root/init_workchain.sh
 
 WORKDIR /root
 RUN chmod +x init_workchain.sh
 
+RUN cd /root && git clone https://github.com/unification-com/workchain-root-contract.git
+
 WORKDIR /root/init
 
 RUN npm install
 
-WORKDIR /root/workchain_root_sc
+WORKDIR /root/workchain-root-contract
 RUN npm install -g truffle
 RUN npm install
 

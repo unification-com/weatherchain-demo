@@ -69,4 +69,3 @@ clean:
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/.env
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/bootnode.key
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/weatherchain_genesis.json
-	@rm -rf $(WORKCHAIN_ASSETS_DIR)/workchain_root_sc/build

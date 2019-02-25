@@ -79,11 +79,11 @@ wget -T 3 -t 1 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=$RPC_NODE_PUBLIC_ADDRE
 
 # Copy the generated .env to the Smart Contract deployment directory
 # since it needs some values during deployment
-cp /root/assets/.env /root/workchain_root_sc/.env
+cp /root/assets/.env /root/workchain-root-contract/.env
 
 # Compile Workchain Root smart contract
 MAINCHAIN_NETWORK_ID=$(grep 'MAINCHAIN_NETWORK_ID' /root/assets/.env)
-cd /root/workchain_root_sc
+cd /root/workchain-root-contract
 truffle compile
 truffle migrate --reset
 WORKCHAIN_ROOT_CONTRACT_ADDRESS=$(node abi.js addr ${MAINCHAIN_NETWORK_ID##*=})
