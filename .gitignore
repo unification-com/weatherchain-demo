@@ -123,3 +123,4 @@ node_modules/
 /Docker/assets/weatherchain.env
 /Docker/assets/weatherchain_genesis.json
 /log.txt
+/docker-compose.override.yml

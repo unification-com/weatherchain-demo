@@ -16,3 +16,6 @@ services:
     container_name: mainchain-node
     ports:
       - 8545:8545
+    networks:
+      weatherchainnet:
+        ipv4_address: ${MAINCHAIN_RPC_HOST}

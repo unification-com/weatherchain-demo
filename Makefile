@@ -9,24 +9,34 @@ help:
 	@echo "2. make build"
 	@echo "3. make run"
 
-# INIT DEV ENVIRONMENT
-init-dev:
-	$(MAKE) init-prepare
-	# Copy user configured weatherchain.dev.env to assets, so builders can modify
-	@cp $(ROOT_DIR)/weatherchain.dev.env $(WORKCHAIN_ASSETS_DIR)/.env
-	$(MAKE) init-run
-
 # INIT TEST ENVIRONMENT
 init:
 	$(MAKE) init-prepare
 	# Copy user configured weatherchain.dev.env to assets, so builders can modify
 	@cp $(ROOT_DIR)/weatherchain.test.env $(WORKCHAIN_ASSETS_DIR)/.env
+	@cp $(ROOT_DIR)/docker-compose.dev.yml $(ROOT_DIR)/docker-compose.override.yml
+	$(MAKE) init-run
+
+# INIT DEV ENVIRONMENT
+init-dev:
+	$(MAKE) init-prepare
+	# Copy user configured weatherchain.dev.env to assets, so builders can modify
+	@cp $(ROOT_DIR)/weatherchain.dev.env $(WORKCHAIN_ASSETS_DIR)/.env
+	@cp $(ROOT_DIR)/docker-compose.dev.yml $(ROOT_DIR)/docker-compose.override.yml
+	$(MAKE) init-run
+
+# INIT AWS ENVIRONMENT
+init-aws:
+	$(MAKE) init-prepare
+	# Copy user configured weatherchain.dev.env to assets, so builders can modify
+	@cp $(ROOT_DIR)/weatherchain.aws_testnet.env $(WORKCHAIN_ASSETS_DIR)/.env
+	@cp $(ROOT_DIR)/docker-compose.aws_testnet.yml $(ROOT_DIR)/docker-compose.override.yml
 	$(MAKE) init-run
 
 # Build deployment Docker environment.
 build:
 	test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n\nfirst. Exiting...\n"; exit 1; }
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml build
+	docker-compose -f docker-compose.yml -f docker-compose.override.yml build
 	@echo "\nDone. Now run:\n\n  make run\n"
 
 
@@ -38,7 +48,7 @@ build-nc:
 run:
 	test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n  make build\n\nfirst. Exiting...\n"; exit 1; }
 	docker-compose down --remove-orphans
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+	docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 
 run-log:
 	docker-compose down --remove-orphans
@@ -69,7 +79,8 @@ clean:
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/.env
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/bootnode.key
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/weatherchain_genesis.json
+	@rm -f $(ROOT_DIR)/docker-compose.override.yml
 
 config:
 	test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n\nfirst. Exiting...\n"; exit 1; }
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml config
+	docker-compose -f docker-compose.yml -f docker-compose.override.yml config
