@@ -69,3 +69,7 @@ clean:
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/.env
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/bootnode.key
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/weatherchain_genesis.json
+
+config:
+	test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n\nfirst. Exiting...\n"; exit 1; }
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml config
