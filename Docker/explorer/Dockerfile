@@ -12,7 +12,9 @@ RUN npm install
 # change port to 8081
 RUN grep -lr -e '8080' ./bin/www | xargs sed -i 's/8080/8081/g'
 RUN grep -lr -e '8545' * | xargs sed -i 's/8545/8547/g'
-RUN cd /opt/blockchain-explorer && grep -lr -e ' ETH' * | xargs sed -i 's/ ETH/ RAIN/g'
+RUN grep -lr -e ' ETH' * | xargs sed -i 's/ ETH/ RAIN/g'
+RUN grep -lr -e 'Ethereum' * | xargs sed -i 's/Ethereum/Weatherchain/g'
+RUN grep -lr -e 'Ether' * | xargs sed -i 's/Ether/Weatherchain/g'
 
 CMD npm run start
 
