@@ -1,0 +1,17 @@
+version: "3"
+services:
+  weather_service:
+    networks:
+      mainchain:
+        ipv4_address: 192.168.43.126
+
+  weatherchain_oracle:
+    networks:
+      mainchain:
+        ipv4_address: 192.168.43.125
+
+networks:
+  mainchain:
+    external:
+      name: mainchain_chainnet
+

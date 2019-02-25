@@ -107,8 +107,6 @@ services:
     networks:
       weatherchainnet:
         ipv4_address: ${WEATHER_SERVICE_IP}
-      mainchain:
-        ipv4_address: 192.168.43.126
 
   weatherchain_oracle:
     hostname: weatherchain_oracle
@@ -128,8 +126,6 @@ services:
     networks:
       weatherchainnet:
         ipv4_address: ${WEATHERCHAIN_ORACLE_IP}
-      mainchain:
-        ipv4_address: 192.168.43.125
 
 networks:
   weatherchainnet:
@@ -137,7 +133,4 @@ networks:
     ipam:
       config:
       - subnet: ${NETWORK_SUBNET}
-  mainchain:
-    external:
-      name: mainchain_chainnet
 
