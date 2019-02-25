@@ -28,9 +28,10 @@ COPY ./assets/init /root/init
 COPY ./assets/init_workchain.sh /root/init_workchain.sh
 
 WORKDIR /root
-RUN chmod +x init_workchain.sh
 
 RUN cd /root && git clone https://github.com/unification-com/workchain-root-contract.git
+
+RUN chmod +x init_workchain.sh
 
 WORKDIR /root/init
 
