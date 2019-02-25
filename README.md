@@ -11,6 +11,8 @@ to its WorkchainRoot smart contract on Mainchain.
 
 ## Running Weatherchain
 
+### Running with local vanilla Mainchain
+
 Ensure Mainchain is running:
 
 1) `cd ../mainchain`
@@ -23,6 +25,12 @@ Ensure Mainchain is running:
 Once Mainchain is up and running, from this directory run:
 
 1) `make init`
+2) `make build`
+3) `make run`
+
+### Running on AWS Testnet
+
+1) `make init-aws`
 2) `make build`
 3) `make run`
 
