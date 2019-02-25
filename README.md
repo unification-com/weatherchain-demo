@@ -11,16 +11,22 @@ to its WorkchainRoot smart contract on Mainchain.
 
 ## Running Weatherchain
 
+Weatherchain can be run with a couple of different configurations, depending on which `make init*`
+target is run to build the environment. The selected `make init*` target will copy the
+appropriate `weatherchain.[SELECTED_ENV].env`, along with the accompanying 
+`docker-compose.[SELECTED_ENV].yml` override file, which will be used along with the 
+base `docker-compose.yml` to bring up the system.
+
 ### Running with local vanilla Mainchain
 
-Ensure Mainchain is running:
+Ensure Mainchain is running locally first:
 
 1) `cd ../mainchain`
 2) `make build`
 3) `make run`
 
-**Important**: if the IPs for Mainchain have been modified, they will need updating in 
-`weatherchain.test.env`
+**Important**: if the IPs for Mainchain have been modified in `../mainchain/docker-compose.yml`, 
+the information will need updating in `weatherchain.test.env` too, to reflect the changes
 
 Once Mainchain is up and running, from this directory run:
 
@@ -30,39 +36,51 @@ Once Mainchain is up and running, from this directory run:
 
 ### Running on AWS Testnet
 
-1) `make init-aws`
-2) `make build`
-3) `make run`
+To connect to the AWS testnet, without needing to run a local instance of Mainchain, initialise
+the system uwing the `make init-aws` build target:
+
+`make init-aws`
+
+Then continue as normal running `build` and `run`:
+
+1) `make build`
+2) `make run`
+
+
+### Notes
 
 **Please note:** you'll need to bring the system down using `make down` before attempting to run
-it again. This will mean re-running the `init` and `build` scripts.
+it again. This will mean re-running the `init*` and `build` scripts.
 
 ## Viewing Weatherchain info
 
 You'll need to wait a minute or so for the environment to start running, and for the Weatherchain UI
-to start up.
+to start up. The console should output a banner notifying that the system is ready.
 
 ### Block explorer
-Weatherchain's blocks can be viewed via http://172.25.0.6:8081
+Weatherchain's blocks can be viewed via http://172.25.0.6:8081 (or whatever IP you have
+configured in `weatherchain.[SELECTED_ENV].env`)
 
 ### Weatherchain UI
 Weatherchain also has a simple UI for watching the Weather Service smart contract,
- and verifying blocks with the Mainchain: http://172.25.0.7:4040/
+ and verifying blocks with the Mainchain: http://172.25.0.7:4040/ (or whatever IP you have
+configured in `weatherchain.[SELECTED_ENV].env`)
  
-http://172.25.0.7:4040/ - this is just a simple interface to display WEather data that is being sent
+http://172.25.0.7:4040/ - this is just a simple interface to display Weather data that is being sent
 to the Weather smart contract on Weatherchain  
 http://172.25.0.7:4040/watch - Watches the Workchain Root smart contract on Mainchain for 
-Weatherchain's block hash deposits  
+Weatherchain's latest block hash deposits  
 http://172.25.0.7:4040/validate - Validate one of Weatherchain's blocks against the hashes
-stored in its Workchain Root smart contract on Mainchain
+stored in its Workchain Root smart contract on Mainchain. Simply enter the block number
+to get the validation output
 
-### Bringing it down
+### Bringing it all down
 
 First, bring down the Weatherchain composition, which has a network dependency:
 
 `make down`
 
-Then, from the Mainchain directory, bring down the mainchain composition:
+Then, if running Mainchain locally, bring down the mainchain composition from the `../mainchain` directory:
 
 `make down`
 
@@ -80,10 +98,12 @@ oracle service to read weather from api.openweathermap.org, and write it to the 
 `init_weatherchain_environment`: Initialises the Weatherchain's environment.
 Only run during the `make init` target.
 
-## Init notes
+## Init: further notes
 
-`make init` will initialise a unique environment for the Weatherchain demo. It will generate the
-necessary genesis block, chain ID, and wallets required to run the demo.
+`make init` will initialise a unique environment for the Weatherchain demo each time it is run. 
+It will generate the necessary genesis block, chain ID, and wallets required to run the demo. 
+It generates new wallets, chain ID and re-deploys a new Workchain Root to prevent any potential 
+clashes with an existing demo system. 
 
 Initialisation calls the Mainchain Faucet to fund the Workchain's addresses with UND
 so that the workchain can deposit hashes to its Workchain Root smart contract.
