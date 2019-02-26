@@ -14,7 +14,8 @@ RUN grep -lr -e '8080' ./bin/www | xargs sed -i 's/8080/8081/g' && \
     sed -i "s/localhost:8545/localhost:8547/g" views/layout/default_layout.jade && \
     grep -lr -e ' ETH' * | xargs sed -i 's/ ETH/ RAIN/g' && \
     grep -lr -e 'Ethereum' * | xargs sed -i 's/Ethereum/Weatherchain/g' && \
-    grep -lr -e 'Ether' * | xargs sed -i 's/Ether/Weatherchain/g'
+    grep -lr -e 'Ether' * | xargs sed -i 's/Ether/Weatherchain/g'&& \
+    grep -rl -e '(ethusd' * | xargs sed -i 's/(ethusd/(0.1/g'
 
 CMD npm run start
 
