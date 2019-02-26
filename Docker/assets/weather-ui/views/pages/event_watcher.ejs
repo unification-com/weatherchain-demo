@@ -8,6 +8,7 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -33,15 +34,17 @@
         <br>
     <h1 class="mt-5">Latest Weatherchain Block recorded on Mainchain</h1>
     <p class="lead">
-        Block #: <span id="block_num"></span><br>
-        Current Time: <span id="block_time"></span><br>
-        Workchain Root Contract on Mainchain: <a href="<%= MAINCHAIN_EXPLORER_URL%>/address/<%= WORKCHAIN_ROOT_CONTRACT_ADDRESS%>" target="_blank"><%= WORKCHAIN_ROOT_CONTRACT_ADDRESS%></a><br>
-        Tx: <a target="_blank" id="tx"></a><br>
-        Hash: <span id="hash"></span><br>
-        Parent Hash: <span id="parent_hash"></span><br>
-        Tx Root: <span id="tx_root"></span><br>
-        State Root: <span id="state_root"></span><br>
-        sealer: <span id="sealer"></span><br>
+        <strong>Status: </strong> <span id="status"></span><br>
+        <strong>Block #:</strong> <span id="block_num"></span><br>
+        <strong>Current Time:</strong> <span id="block_time"></span><br>
+        <strong>Workchain Root Contract on Mainchain:</strong> <a href="<%= MAINCHAIN_EXPLORER_URL%>/address/<%= WORKCHAIN_ROOT_CONTRACT_ADDRESS%>" target="_blank"><%= WORKCHAIN_ROOT_CONTRACT_ADDRESS%></a><br>
+        <strong>Tx:</strong> <a target="_blank" id="tx"></a><br>
+        <strong>Hash:</strong> <span id="hash"></span><br>
+        <strong>Parent Hash:</strong> <span id="parent_hash"></span><br>
+        <strong>Tx Root:</strong> <span id="tx_root"></span><br>
+        <strong>State Root:</strong> <span id="state_root"></span><br>
+        <strong>Sealer:</strong> <span id="sealer"></span><br>
+        <strong>Next check:</strong> <span id="next_block">5</span>
     </p>
 
     </main>
@@ -68,32 +71,61 @@
 
 <script type="text/javascript">
 
+    var images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
+    var bg_img = 'img/' + images[Math.floor(Math.random() * images.length)];
+
     $(document).ready(function () {
+
+        $('body').css("background-image", "url('" + bg_img + "')");
+
         let workchainEventWatcher = new WorkchainEventWatcher('<%= WORKCHAIN_ROOT_CONTRACT_ADDRESS%>',
                                 '<%= MAINCHAIN_WEB3_PROVIDER_URL%>',
                                 <%- JSON.stringify(WORKCHAIN_ROOT_ABI)%>);
         updateWatcher();
         setInterval(function(){
             updateWatcher();
-         }, 10000);
+        }, 5000);
 
-         function updateWatcher() {
-             workchainEventWatcher.getLatestRecordedHeader(function(results) {
-                let data = results[0];
-                let now = new Date(Date.now());
-                $('#block_num').text(data.returnValues.height);
-                $('#block_time').text(now.toString());
-                $('#tx').text(data.transactionHash);
-                $('#tx').attr('href','<%= MAINCHAIN_EXPLORER_URL%>/tx/' + data.transactionHash);
-                $('#hash').text(data.returnValues.hash);
-                $('#parent_hash').text(data.returnValues.parent_hash);
-                $('#receipt_root').text(data.returnValues.receipt_root);
-                $('#tx_root').text(data.returnValues.tx_root);
-                $('#state_root').text(data.returnValues.state_root);
-                $('#sunrise').text(data.returnValues.sunrise);
-                $('#sealer').text(data.returnValues.sealer);
+        setInterval(function(){
+            nextCheck();
+        }, 1000);
+
+        function updateWatcher() {
+            $('#status').text("Fetching data");
+            $('#next_block').text("6");
+            workchainEventWatcher.getLatestRecordedHeader(function(success, results) {
+                if(success && results.length > 0) {
+                    let data = results[0];
+                    console.log("data");
+                    console.log(data);
+                    let now = new Date(Date.now());
+                    $('#block_num').text(data.returnValues.height);
+                    $('#block_time').text(now.toString());
+                    $('#tx').text(data.transactionHash);
+                    $('#tx').attr('href','<%= MAINCHAIN_EXPLORER_URL%>/tx/' + data.transactionHash);
+                    $('#hash').text(data.returnValues.hash);
+                    $('#parent_hash').text(data.returnValues.parent_hash);
+                    $('#receipt_root').text(data.returnValues.receipt_root);
+                    $('#tx_root').text(data.returnValues.tx_root);
+                    $('#state_root').text(data.returnValues.state_root);
+                    $('#sunrise').text(data.returnValues.sunrise);
+                    $('#sealer').text(data.returnValues.sealer);
+                    $('#status').text("Success");
+                } else {
+                    console.log(results);
+                    $('#status').text("Please refresh to try again");
+                }
             });
-         }
+        }
+
+        function nextCheck() {
+            let current = parseInt($('#next_block').text());
+            let next = current - 1;
+            if(next < 0) {
+                next = 0;
+            }
+            $('#next_block').text(next)
+        }
     });
 </script>
 </body>

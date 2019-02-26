@@ -18,7 +18,13 @@ const parseData = (body) => {
   return new Promise((resolve, reject) => {
     let weatherDescription, temperature, humidity, visibility, pressure, sunrise, sunset;
     try {
-      weatherDescription = body.weather[0].description.toString();
+      let weather = '{' +
+        '"description": "' + body.weather[0].description.toString() + '",' +
+        '"icon": "' + body.weather[0].icon.toString() + '",' +
+        '"id": "' + body.weather[0].id.toString() + '",' +
+        '"main": "' + body.weather[0].main.toString() + '"' +
+      '}';
+      weatherDescription = weather;
       temperature = body.main.temp.toString();
       humidity = body.main.humidity.toString();
       visibility = body.visibility.toString();

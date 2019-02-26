@@ -5,6 +5,7 @@ function WorkchainEventWatcher(_contractAddress, _web3ProviderUrl, _abi) {
     this.web3js = null;
     this.contractAddress = _contractAddress;
     this.abi = JSON.parse(abi);
+    this.lastEvent = null;
 
     let self = this;
 
@@ -20,17 +21,28 @@ WorkchainEventWatcher.prototype.getLatestRecordedHeader = function(_callback) {
 
     this.getCurrentBlockNumber().then(blockNumber => {
         self.workchainRootContract.getPastEvents('RecordHeader', {
-            fromBlock: blockNumber,
+            fromBlock: blockNumber -1,
             toBlock: 'latest'
-        }, (error, events) => { })
-        .then((events) => {
-            _callback(events);
-        });
+        }, (error, events) => {
+           console.log(events);
+           if(error) {
+               console.log("error", error);
+               if(self.lastEvent != null) {
+                   _callback(true, self.lastEvent);
+               } else {
+                   _callback(false, error);
+               }
+           } else {
+               self.lastEvent = events;
+               _callback(true, events);
+           }
+         });
         return;
     });
 }
 
 WorkchainEventWatcher.prototype.getCurrentBlockNumber = async function () {
     let blockNumber = await this.web3js.eth.getBlockNumber();
+    console.log("blockNumber:",blockNumber);
     return blockNumber;
 }
