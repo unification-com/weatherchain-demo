@@ -35,15 +35,17 @@
     <h1 class="mt-5">Latest Weatherchain Block recorded on Mainchain</h1>
     <p class="lead">
         <strong>Status: </strong> <span id="status"></span><br>
-        <strong>Block #:</strong> <span id="block_num"></span><br>
-        <strong>Current Time:</strong> <span id="block_time"></span><br>
-        <strong>Workchain Root Contract on Mainchain:</strong> <a href="<%= MAINCHAIN_EXPLORER_URL%>/address/<%= WORKCHAIN_ROOT_CONTRACT_ADDRESS%>" target="_blank"><%= WORKCHAIN_ROOT_CONTRACT_ADDRESS%></a><br>
-        <strong>Tx:</strong> <a target="_blank" id="tx"></a><br>
+        <h3>WeatherChain Block #<span id="block_num"></span> Submitted to Mainchain</h3>
         <strong>Hash:</strong> <span id="hash"></span><br>
         <strong>Parent Hash:</strong> <span id="parent_hash"></span><br>
         <strong>Tx Root:</strong> <span id="tx_root"></span><br>
         <strong>State Root:</strong> <span id="state_root"></span><br>
         <strong>Sealer:</strong> <span id="sealer"></span><br>
+        <strong>Current Time:</strong> <span id="block_time"></span><br>
+
+        <h3>Mainchain Info</h3>
+        <strong>WeatherChain's Workchain Root Contract on Mainchain:</strong> <a href="<%= MAINCHAIN_EXPLORER_URL%>/address/<%= WORKCHAIN_ROOT_CONTRACT_ADDRESS%>" target="_blank"><%= WORKCHAIN_ROOT_CONTRACT_ADDRESS%></a><br>
+        <strong>Submitted in Mainchain Tx:</strong> <a target="_blank" id="tx"></a><br>
         <strong>Next check:</strong> <span id="next_block">5</span>
     </p>
 
@@ -51,7 +53,7 @@
 
     <footer class="footer">
     <div class="container">
-        <span class="text-muted"></span>
+        <span class="text-muted">Background images from <a href="https://pixabay.com" target="_blank">https://pixabay.com</a></span>
     </div>
     </footer>
 
