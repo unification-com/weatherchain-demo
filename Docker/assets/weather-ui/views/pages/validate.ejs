@@ -168,7 +168,7 @@
 
         let workchainRoot = new WorkchainRoot('<%= WORKCHAIN_ROOT_CONTRACT_ADDRESS%>',
                                 '<%= MAINCHAIN_WEB3_PROVIDER_URL%>',
-                                '<%= WORKCHAIN_WEB3_PROVIDER_URL%>',
+                                'http://localhost:8547',
                                 <%- JSON.stringify(WORKCHAIN_ROOT_ABI)%>);
 
         $('#check_block').click(function() {

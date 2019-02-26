@@ -44,7 +44,7 @@
         <strong>Sunset:</strong> <span id="sunset"></span><br>
 
         <h3>Chain info</h3>
-        <strong>Contract:</strong> <a href="<%= WORKCHAIN_EXPLORER_URL%>/address/<%= WEATHER_ORACLE_CONTRACT_ADDRESS%>" target="_blank"><%= WEATHER_ORACLE_CONTRACT_ADDRESS%></a><br>
+        <strong>Contract:</strong> <a href="http://localhost:8081/address/<%= WEATHER_ORACLE_CONTRACT_ADDRESS%>" target="_blank"><%= WEATHER_ORACLE_CONTRACT_ADDRESS%></a><br>
         <strong>Tx:</strong> <a target="_blank" id="tx"></a><br><br>
 
         <strong>Current Time:</strong> <span id="block_time"></span><br>
@@ -83,7 +83,7 @@
         $('body').css("background-image", "url('" + bg_img + "')");
 
         let weatherService = new WeatherServiceContract('<%= WEATHER_ORACLE_CONTRACT_ADDRESS%>',
-                                '<%= WORKCHAIN_WEB3_PROVIDER_URL%>',
+                                'http://localhost:8547',
                                 <%- JSON.stringify(WEATHER_ORACLE_ABI)%>);
         updateWeather();
         setInterval(function(){
@@ -115,10 +115,10 @@
                 $('#wicon').attr('alt', weather.description);
 
                 $('#block_num').text(data.blockNumber);
-                $('#block_num').attr('href','<%= WORKCHAIN_EXPLORER_URL%>/block/' + data.blockNumber);
+                $('#block_num').attr('href','http://localhost:8081/block/' + data.blockNumber);
                 $('#block_time').text(now.toString());
                 $('#tx').text(data.transactionHash);
-                $('#tx').attr('href','<%= WORKCHAIN_EXPLORER_URL%>/tx/' + data.transactionHash);
+                $('#tx').attr('href','http://localhost:8081/tx/' + data.transactionHash);
                 $('#weather_desc').text(weather.description);
                 $('#temperature').text(data.returnValues.temperature);
                 $('#humidity').text(data.returnValues.humidity);
