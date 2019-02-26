@@ -1,21 +1,21 @@
 version: "3"
-services:
-  mainchain-node:
-    hostname: mainchain-node
-    environment:
-      - address=${RPC_NODE_PUBLIC_ADDRESS_MAINCHAIN}
-      - bootnodeId=fa0caff39a29bfc2cfd8bbeca47acbd42c82cf91cde9890a312a82d5e2822add106113a179cfc2cde98e5f1a7296a42ef828fecbcea30615666762f41ed9a533
-      - bootnodeIp=52.14.173.249
-      - chainId=${MAINCHAIN_NETWORK_ID}
-    build:
-      context: ./Docker
-      dockerfile: ./mainchain_rpc_node/Dockerfile
-      args:
-        privatekey: ${RPC_NODE_PRIVATE_KEY_MAINCHAIN}
-        password: ${RPC_NODE_WALLET_PASS_MAINCHAIN}
-    container_name: mainchain-node
-    ports:
-      - 8545:8545
-    networks:
-      weatherchainnet:
-        ipv4_address: ${MAINCHAIN_RPC_HOST}
+#services:
+#  mainchain-node:
+#    hostname: mainchain-node
+#    environment:
+#      - address=${RPC_NODE_PUBLIC_ADDRESS_MAINCHAIN}
+#      - bootnodeId=fa0caff39a29bfc2cfd8bbeca47acbd42c82cf91cde9890a312a82d5e2822add106113a179cfc2cde98e5f1a7296a42ef828fecbcea30615666762f41ed9a533
+#      - bootnodeIp=52.14.173.249
+#      - chainId=${MAINCHAIN_NETWORK_ID}
+#    build:
+#      context: ./Docker
+#      dockerfile: ./mainchain_rpc_node/Dockerfile
+#      args:
+#        privatekey: ${RPC_NODE_PRIVATE_KEY_MAINCHAIN}
+#        password: ${RPC_NODE_WALLET_PASS_MAINCHAIN}
+#    container_name: mainchain-node
+#    ports:
+#      - 8545:8545
+#    networks:
+#      weatherchainnet:
+#        ipv4_address: ${MAINCHAIN_RPC_HOST}
