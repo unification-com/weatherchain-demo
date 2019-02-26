@@ -23,5 +23,3 @@ WORKDIR /root/weather-ui
 RUN npm install
 
 CMD cd /root && ./deploy_weather_service.sh
-
-#EXPOSE 4040
