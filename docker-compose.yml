@@ -103,6 +103,8 @@ services:
     build:
       context: ./Docker
       dockerfile: ./weather_service/Dockerfile
+    ports:
+    - 4040:4040
     container_name: weather_service
     networks:
       weatherchainnet:
