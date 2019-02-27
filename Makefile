@@ -31,7 +31,7 @@ init-aws:
 	# Copy user configured weatherchain.dev.env to assets, so builders can modify
 	@cp $(ROOT_DIR)/weatherchain.aws_testnet.env $(WORKCHAIN_ASSETS_DIR)/.env
 	@cp $(ROOT_DIR)/docker-compose.aws_testnet.yml $(ROOT_DIR)/docker-compose.override.yml
-	$(MAKE) init-run
+	$(MAKE) init-run-aws
 
 # Build deployment Docker environment.
 build:
@@ -65,6 +65,12 @@ init-prepare:
 init-run:
 	@cd $(ROOT_DIR)/Docker && docker build -f init_environment/Dockerfile -t init_weatherchain_environment .
 	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets --ip 192.168.43.124 --network mainchain_chainnet init_weatherchain_environment
+	# Copy generated .env to root dir so compose can access values
+	@cp $(WORKCHAIN_ASSETS_DIR)/.env $(ROOT_DIR)/.env
+
+init-run-aws:
+	@cd $(ROOT_DIR)/Docker && docker build -f init_environment/Dockerfile -t init_weatherchain_environment .
+	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets init_weatherchain_environment
 	# Copy generated .env to root dir so compose can access values
 	@cp $(WORKCHAIN_ASSETS_DIR)/.env $(ROOT_DIR)/.env
 
