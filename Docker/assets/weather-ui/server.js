@@ -46,6 +46,6 @@ console.log( "= WEATHER SERVICE UI READY          =");
 console.log( "= ------------------------          =");
 console.log( "=                                   =");
 console.log( "= open:                             =");
-console.log( "= http://"+process.env.WEATHER_SERVICE_IP+":4040  =");
+console.log( "= http://localhost:4040             =");
 console.log( "=                                   =");
 console.log( "=====================================");
