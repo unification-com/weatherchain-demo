@@ -1,16 +1,50 @@
 version: "3"
 services:
+  weatherchain_bootnode:
+    networks:
+      weatherchainnet:
+        ipv4_address: ${BOOTNODE_IP}
+
+  weatherchain_validator_1:
+    networks:
+      weatherchainnet:
+        ipv4_address: ${EV1_IP}
+
+  weatherchain_validator_2:
+    networks:
+      weatherchainnet:
+        ipv4_address: ${EV2_IP}
+
+  weatherchain_node_1:
+    networks:
+      weatherchainnet:
+        ipv4_address: ${WORKCHAIN_RPC_HOST}
+
+  weatherchain_explorer:
+    networks:
+      weatherchainnet:
+        ipv4_address: ${WORKCHAIN_EXPLORER_IP}
+
   weather_service:
     networks:
       mainchain:
         ipv4_address: 192.168.43.126
+      weatherchainnet:
+        ipv4_address: ${WEATHER_SERVICE_IP}
 
   weatherchain_oracle:
     networks:
       mainchain:
         ipv4_address: 192.168.43.125
+      weatherchainnet:
+        ipv4_address: ${WEATHERCHAIN_ORACLE_IP}
 
 networks:
+  weatherchainnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${NETWORK_SUBNET}
   mainchain:
     external:
       name: mainchain_chainnet
