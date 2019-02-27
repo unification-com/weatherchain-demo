@@ -7,9 +7,6 @@ services:
       dockerfile: ./bootnode/Dockerfile
     ports:
     - 30304:30304/udp
-    networks:
-      weatherchainnet:
-        ipv4_address: ${BOOTNODE_IP}
 
   weatherchain_validator_1:
     hostname: weatherchain_validator_1
@@ -29,9 +26,8 @@ services:
         password: ${EV1_WALLET_PASS}
         genesis: weatherchain_genesis.json
     container_name: weatherchain_validator_1
-    networks:
-      weatherchainnet:
-        ipv4_address: ${EV1_IP}
+    ports:
+    - 30305:30305
 
   weatherchain_validator_2:
     hostname: weatherchain_validator_2
@@ -51,9 +47,8 @@ services:
         password: ${EV2_WALLET_PASS}
         genesis: weatherchain_genesis.json
     container_name: weatherchain_validator_2
-    networks:
-      weatherchainnet:
-        ipv4_address: ${EV2_IP}
+    ports:
+    - 30306:30306
 
   weatherchain_node_1:
     hostname: weatherchain_node_1
@@ -76,9 +71,6 @@ services:
     container_name: weatherchain_node_1
     ports:
     - ${WORKCHAIN_RPC_PORT}:${WORKCHAIN_RPC_PORT}
-    networks:
-      weatherchainnet:
-        ipv4_address: ${WORKCHAIN_RPC_HOST}
 
   weatherchain_explorer:
     hostname: weatherchain_explorer
@@ -92,9 +84,6 @@ services:
       context: ./Docker
       dockerfile: ./explorer/Dockerfile
     container_name: weatherchain_explorer
-    networks:
-      weatherchainnet:
-        ipv4_address: ${WORKCHAIN_EXPLORER_IP}
 
   weather_service:
     hostname: weather_service
@@ -106,9 +95,6 @@ services:
     ports:
     - 4040:4040
     container_name: weather_service
-    networks:
-      weatherchainnet:
-        ipv4_address: ${WEATHER_SERVICE_IP}
 
   weatherchain_oracle:
     hostname: weatherchain_oracle
@@ -125,14 +111,4 @@ services:
     - workchain_root_address=${WORKCHAIN_ROOT_CONTRACT_ADDRESS}
     - timeout=${WORKCHAIN_ROOT_WRITE_TIMEOUT}
     - workchain_chain_id=${WORKCHAIN_NETWORK_ID}
-    networks:
-      weatherchainnet:
-        ipv4_address: ${WEATHERCHAIN_ORACLE_IP}
-
-networks:
-  weatherchainnet:
-    driver: bridge
-    ipam:
-      config:
-      - subnet: ${NETWORK_SUBNET}
 
