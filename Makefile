@@ -5,7 +5,7 @@ ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 WORKCHAIN_ASSETS_DIR:=$(ROOT_DIR)/Docker/assets
 
 help:
-	@echo "1. make init"
+	@echo "1. make init-aws"
 	@echo "2. make build"
 	@echo "3. make run"
 
@@ -51,8 +51,7 @@ run:
 	docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 
 run-log:
-	docker-compose down --remove-orphans
-	docker-compose up 2>&1 | tee log.txt
+	$(MAKE) run 2>&1 | tee log.txt
 
 # Bring deployment Docker environment down
 down:
