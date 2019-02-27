@@ -41,12 +41,6 @@ sed -i "s/RPC_NODE_PUBLIC_ADDRESS=/RPC_NODE_PUBLIC_ADDRESS=$RPC_NODE_PUBLIC_ADDR
 RPC_NODE_PRIVATE_KEY=$(node init.js private_key "$MNEMONIC" 2)
 sed -i "s/RPC_NODE_PRIVATE_KEY=/RPC_NODE_PRIVATE_KEY=$RPC_NODE_PRIVATE_KEY/g" /root/assets/.env
 
-RPC_NODE_PUBLIC_ADDRESS_MAINCHAIN=$(node init.js address "$MNEMONIC" 3)
-sed -i "s/RPC_NODE_PUBLIC_ADDRESS_MAINCHAIN=/RPC_NODE_PUBLIC_ADDRESS_MAINCHAIN=$RPC_NODE_PUBLIC_ADDRESS_MAINCHAIN/g" /root/assets/.env
-
-RPC_NODE_PRIVATE_KEY_MAINCHAIN=$(node init.js private_key "$MNEMONIC" 3)
-sed -i "s/RPC_NODE_PRIVATE_KEY_MAINCHAIN=/RPC_NODE_PRIVATE_KEY_MAINCHAIN=$RPC_NODE_PRIVATE_KEY_MAINCHAIN/g" /root/assets/.env
-
 # Write EV1 and EV2 public addresses to "WORKCHAIN_EVS" variable in .env
 # Used when the Workchain Root smart contract is deployed
 sed -i "s/WORKCHAIN_EV_2/$EV2_PUBLIC_ADDRESS/g" /root/assets/.env
