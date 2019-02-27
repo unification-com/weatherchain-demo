@@ -19,9 +19,6 @@ BOOTNODE_ID=$(/root/.go/bin/bootnode -nodekey /root/assets/bootnode.key -writead
 chmod +rw /root/assets/bootnode.key
 sed -i "s/BOOTNODE_ID=/BOOTNODE_ID=$BOOTNODE_ID/g" /root/assets/.env
 
-# Write Workchain's Web3 provider to .env
-sed -i "s/WORKCHAIN_WEB3_PROVIDER_URL=/WORKCHAIN_WEB3_PROVIDER_URL=http:\/\/${WORKCHAIN_RPC_HOST##*=}:${WORKCHAIN_RPC_PORT##*=}/g" /root/assets/.env
-
 # Write Mnemonic to .env
 sed -i "s/MNEMONIC=/MNEMONIC=$MNEMONIC/g" /root/assets/.env
 
