@@ -10,9 +10,6 @@ CHAIN_ID=$(od -N 4 -t uL -An /dev/urandom | tr -d " ")
 # generate a unique wallet mnemonic
 MNEMONIC=$(node init.js mnemonic)
 
-WORKCHAIN_RPC_HOST=$(grep 'WORKCHAIN_RPC_HOST' /root/assets/.env)
-WORKCHAIN_RPC_PORT=$(grep 'WORKCHAIN_RPC_PORT' /root/assets/.env)
-
 #Generate bootnode key
 /root/.go/bin/bootnode -genkey /root/assets/bootnode.key
 BOOTNODE_ID=$(/root/.go/bin/bootnode -nodekey /root/assets/bootnode.key -writeaddress)
