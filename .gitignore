@@ -124,3 +124,4 @@ node_modules/
 /Docker/assets/weatherchain_genesis.json
 /log.txt
 /docker-compose.override.yml
+/.is_built

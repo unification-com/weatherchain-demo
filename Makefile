@@ -31,10 +31,10 @@ init:
 	@cp $(ROOT_DIR)/docker-compose.$(BUILD).yml $(ROOT_DIR)/docker-compose.override.yml
 	@cd $(ROOT_DIR)/Docker && docker build -f init_environment/Dockerfile -t init_weatherchain_environment .
 ifeq ($(BUILD),aws_testnet)
-	@echo "building AWS"
+	@echo "Initialising environment for AWS Testnet"
 	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets init_weatherchain_environment
 else
-	@echo "building something else: $(BUILD)"
+	@echo "Initialising environment something else: $(BUILD)"
 	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets --ip 192.168.43.124 --network mainchain_chainnet init_weatherchain_environment
 endif
 	@cp $(WORKCHAIN_ASSETS_DIR)/.env $(ROOT_DIR)/.env
@@ -42,17 +42,19 @@ endif
 # Build deployment Docker environment, based on the initialised variables.
 # Must run make init first
 build:
-	test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n\nfirst. Exiting...\n"; exit 1; }
+	@test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n\nfirst. Exiting...\n"; exit 1; }
 ifeq ($(DOCKER_CACHE),TRUE)
 	docker-compose -f docker-compose.yml -f docker-compose.override.yml build
 else
 	docker-compose -f docker-compose.yml -f docker-compose.override.yml build --no-cache
 endif
+	@echo "TRUE" >> $(ROOT_DIR)/.is_built
 	@echo "\nDone. Now run:\n\n  make run\n"
 
 # Run deployment Docker environment.
 run:
-	test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n  make build\n\nfirst. Exiting...\n"; exit 1; }
+	@test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n  make build\n\nfirst. Exiting...\n"; exit 1; }
+	@test -s $(ROOT_DIR)/.is_built || { echo "\nBUILD ERROR!\n\nDocker not built yet.\n\nRun:\n\n  make build\n\nfirst. Exiting...\n"; exit 1; }
 	docker-compose down --remove-orphans
 ifeq ($(RUN_LOG),TRUE)
 	docker-compose -f docker-compose.yml -f docker-compose.override.yml up 2>&1 | tee log.txt
@@ -81,6 +83,7 @@ clean:
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/bootnode.key
 	@rm -f $(WORKCHAIN_ASSETS_DIR)/weatherchain_genesis.json
 	@rm -f $(ROOT_DIR)/docker-compose.override.yml
+	@rm -f $(ROOT_DIR)/.is_built
 
 config:
 	test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n\nfirst. Exiting...\n"; exit 1; }
