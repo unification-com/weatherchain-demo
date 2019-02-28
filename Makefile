@@ -3,6 +3,7 @@
 # Set some variables
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 WORKCHAIN_ASSETS_DIR:=$(ROOT_DIR)/Docker/assets
+BUILD_ENVS:=dev test aws_testnet
 
 # Can be set before make init.
 # BUILD=dev make init
@@ -35,14 +36,27 @@ init:
 	$(MAKE) init-prepare
 	@mkdir -p $(WORKCHAIN_ASSETS_DIR)/build
 
+ifeq ($(filter $(BUILD),$(BUILD_ENVS)),)
+	@echo "\nERROR:"
+	@echo "------\n"
+	@echo "BUILD must be one of '$(BUILD_ENVS)'. Detected '$(BUILD)'\n"
+	@echo "Valid initialisation environments:\n"
+	@echo "BUILD=dev make init"
+	@echo "BUILD=test make init"
+	@echo "BUILD=aws_testnet make init\n"
+	@echo "Or just initialise the default aws_testnet environment by running:\n"
+	@echo "make init\n"
+	@exit 1
+endif
+
 	# Copy user configured weatherchain.$(BUILD).env to assets, so builders can modify
-	@cp $(ROOT_DIR)/weatherchain.$(BUILD).env $(WORKCHAIN_ASSETS_DIR)/build/.env
+	@cp $(ROOT_DIR)/envs/weatherchain.$(BUILD).env $(WORKCHAIN_ASSETS_DIR)/build/.env
 
 	@echo "\n\nEdit assets/build/.env as required, then press RETURN to continue\n\n"; \
     read dummy_input;
 
 	# Copy selected environment's docker-compose Override
-	@cp $(ROOT_DIR)/docker-compose.$(BUILD).yml $(ROOT_DIR)/docker-compose.override.yml
+	@cp $(ROOT_DIR)/envs/compose_overrides/docker-compose.$(BUILD).yml $(ROOT_DIR)/docker-compose.override.yml
 
 	# Build the init Docker container
 	@cd $(ROOT_DIR)/Docker && docker build -f init_environment/Dockerfile -t init_weatherchain_environment .
@@ -70,7 +84,7 @@ else
 	docker-compose -f docker-compose.yml -f docker-compose.override.yml build --no-cache
 endif
 	# set flag that indicates build has been run
-	@echo "TRUE" >> $(ROOT_DIR)/.is_built
+	@echo "TRUE" >> $(WORKCHAIN_ASSETS_DIR)/build/.is_built
 	@echo "\nDone. Now run:\n\n  make run\n"
 
 
@@ -79,7 +93,7 @@ run:
 	# Check that make init has been run first
 	@test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n  make build\n\nfirst. Exiting...\n"; exit 1; }
 	# Check that make build has been run first
-	@test -s $(ROOT_DIR)/.is_built || { echo "\nBUILD ERROR!\n\nDocker not built yet.\n\nRun:\n\n  make build\n\nfirst. Exiting...\n"; exit 1; }
+	@test -s $(WORKCHAIN_ASSETS_DIR)/build/.is_built || { echo "\nBUILD ERROR!\n\nDocker not built yet.\n\nRun:\n\n  make build\n\nfirst. Exiting...\n"; exit 1; }
 	docker-compose down --remove-orphans
 ifeq ($(RUN_LOG),TRUE)
 	docker-compose -f docker-compose.yml -f docker-compose.override.yml up 2>&1 | tee log.txt
@@ -112,7 +126,6 @@ clean:
 	@rm -f $(ROOT_DIR)/.env
 	@rm -rf $(WORKCHAIN_ASSETS_DIR)/build
 	@rm -f $(ROOT_DIR)/docker-compose.override.yml
-	@rm -f $(ROOT_DIR)/.is_built
 
 
 # Output Docker composition configuration for current initialised env
