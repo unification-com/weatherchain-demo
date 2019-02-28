@@ -2,7 +2,7 @@
 
 cd /root/init
 
-cat /root/init/autogen.env >> /root/assets/.env
+cat /root/assets/templates/autogen.env >> /root/assets/.env
 
 # Generate a unique workchain ID
 CHAIN_ID=$(od -N 4 -t uL -An /dev/urandom | tr -d " ")
@@ -47,7 +47,7 @@ sed -i "s/WORKCHAIN_EV_1/$EV1_PUBLIC_ADDRESS/g" /root/assets/.env
 sed -i "s/WORKCHAIN_NETWORK_ID=/WORKCHAIN_NETWORK_ID=$CHAIN_ID/g" /root/assets/.env
 
 # Psuedo generate the genesis.json
-cp /root/assets/genesis_template.json /root/assets/weatherchain_genesis.json
+cp /root/assets/templates/genesis_template.json /root/assets/weatherchain_genesis.json
 sed -i "s/SEALERADDRESSES/${EV1_PUBLIC_ADDRESS:2}${EV2_PUBLIC_ADDRESS:2}/g" /root/assets/weatherchain_genesis.json
 
 sed -i "s/EV1/${EV1_PUBLIC_ADDRESS:2}/g" /root/assets/weatherchain_genesis.json
