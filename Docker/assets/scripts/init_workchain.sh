@@ -47,29 +47,30 @@ sed -i "s/WORKCHAIN_EV_1/$EV1_PUBLIC_ADDRESS/g" /root/assets/build/.env
 sed -i "s/WORKCHAIN_NETWORK_ID=/WORKCHAIN_NETWORK_ID=$CHAIN_ID/g" /root/assets/build/.env
 
 # Psuedo generate the genesis.json
-cp /root/assets/templates/genesis_template.json /root/assets/build/weatherchain_genesis.json
-sed -i "s/SEALERADDRESSES/${EV1_PUBLIC_ADDRESS:2}${EV2_PUBLIC_ADDRESS:2}/g" /root/assets/build/weatherchain_genesis.json
+WORKCHAIN_GENESIS_JSON_FILENAME=$(grep 'WORKCHAIN_GENESIS_JSON_FILENAME' /root/assets/build/.env)
+cp /root/assets/templates/genesis_template.json /root/assets/build/${WORKCHAIN_GENESIS_JSON_FILENAME##*=}
+sed -i "s/SEALERADDRESSES/${EV1_PUBLIC_ADDRESS:2}${EV2_PUBLIC_ADDRESS:2}/g" /root/assets/build/${WORKCHAIN_GENESIS_JSON_FILENAME##*=}
 
-sed -i "s/EV1/${EV1_PUBLIC_ADDRESS:2}/g" /root/assets/build/weatherchain_genesis.json
-sed -i "s/EV2/${EV2_PUBLIC_ADDRESS:2}/g" /root/assets/build/weatherchain_genesis.json
-sed -i "s/RPC/${RPC_NODE_PUBLIC_ADDRESS:2}/g" /root/assets/build/weatherchain_genesis.json
-sed -i "s/WORKCHAIN_ID/${CHAIN_ID}/g" /root/assets/build/weatherchain_genesis.json
+sed -i "s/EV1/${EV1_PUBLIC_ADDRESS:2}/g" /root/assets/build/${WORKCHAIN_GENESIS_JSON_FILENAME##*=}
+sed -i "s/EV2/${EV2_PUBLIC_ADDRESS:2}/g" /root/assets/build/${WORKCHAIN_GENESIS_JSON_FILENAME##*=}
+sed -i "s/RPC/${RPC_NODE_PUBLIC_ADDRESS:2}/g" /root/assets/build/${WORKCHAIN_GENESIS_JSON_FILENAME##*=}
+sed -i "s/WORKCHAIN_ID/${CHAIN_ID}/g" /root/assets/build/${WORKCHAIN_GENESIS_JSON_FILENAME##*=}
 
 # Write the genesis.json to .env. Used when deploying the Workchain Root smart contract
 while IFS='' read -r line || [[ -n "$line" ]]; do
     sed -i "s/WORKCHAIN_GENESIS=/WORKCHAIN_GENESIS=${line}/g" /root/assets/build/.env
-done < /root/assets/build/weatherchain_genesis.json
+done < /root/assets/build/${WORKCHAIN_GENESIS_JSON_FILENAME##*=}
 
 # Fund the generated addresses on Mainchain using the faucet
 MAINCHAIN_FAUCET_URL=$(grep 'MAINCHAIN_FAUCET_URL' /root/assets/build/.env)
 echo "fund $EV1_PUBLIC_ADDRESS"
-wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=$EV1_PUBLIC_ADDRESS
+wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=${EV1_PUBLIC_ADDRESS}
 sleep 6s
 echo "fund $EV2_PUBLIC_ADDRESS"
-wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=$EV2_PUBLIC_ADDRESS
+wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=${EV2_PUBLIC_ADDRESS}
 sleep 6s
 echo "fund $RPC_NODE_PUBLIC_ADDRESS"
-wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=$RPC_NODE_PUBLIC_ADDRESS
+wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=${RPC_NODE_PUBLIC_ADDRESS}
 
 # Copy the generated .env to the Smart Contract deployment directory
 # since it needs some values during deployment
