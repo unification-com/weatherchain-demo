@@ -26,7 +26,8 @@ ENV bootnodeId=""
 ENV bootnodeIp=""
 ENV chainId=""
 ENV listenport=""
+ENV bootnode_port=""
 
-CMD exec geth --bootnodes "enode://$bootnodeId@$bootnodeIp:30304" --networkid "$chainId" --verbosity=4  --syncmode=full --mine --gasprice "0" --etherbase $address --unlock $address --password ~/.accountpassword --port $listenport
+CMD exec geth --bootnodes "enode://$bootnodeId@$bootnodeIp:$bootnode_port" --networkid "$chainId" --verbosity=4  --syncmode=full --mine --gasprice "0" --etherbase $address --unlock $address --password ~/.accountpassword --port $listenport
 
 EXPOSE $listenport

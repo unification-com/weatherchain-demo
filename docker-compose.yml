@@ -6,7 +6,9 @@ services:
       context: ./Docker
       dockerfile: ./bootnode/Dockerfile
     ports:
-    - 30304:30304/udp
+    - ${BOOTNODE_PORT}:${BOOTNODE_PORT}/udp
+    environment:
+    - bootnode_port=${BOOTNODE_PORT}
 
   weatherchain_validator_1:
     hostname: weatherchain_validator_1
@@ -18,6 +20,7 @@ services:
     - bootnodeIp=${BOOTNODE_IP}
     - chainId=${WORKCHAIN_NETWORK_ID}
     - listenport=30305
+    - bootnode_port=${BOOTNODE_PORT}
     build:
       context: ./Docker
       dockerfile: ./validator/Dockerfile
@@ -39,6 +42,7 @@ services:
     - bootnodeIp=${BOOTNODE_IP}
     - chainId=${WORKCHAIN_NETWORK_ID}
     - listenport=30306
+    - bootnode_port=${BOOTNODE_PORT}
     build:
       context: ./Docker
       dockerfile: ./validator/Dockerfile
@@ -61,6 +65,7 @@ services:
     - chainId=${WORKCHAIN_NETWORK_ID}
     - listenport=30307
     - rpcport=${WORKCHAIN_RPC_PORT}
+    - bootnode_port=${BOOTNODE_PORT}
     build:
       context: ./Docker
       dockerfile: ./node/Dockerfile

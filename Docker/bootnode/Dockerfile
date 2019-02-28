@@ -14,6 +14,8 @@ RUN apt-get update \
 
 COPY ./assets/build/bootnode.key /root/assets/bootnode.key
 
-CMD exec bootnode -nodekey /root/assets/bootnode.key -verbosity 4 --addr :30304
+ENV bootnode_port=""
 
-EXPOSE 30304/udp
+CMD exec bootnode -nodekey /root/assets/bootnode.key -verbosity 4 --addr :$bootnode_port
+
+EXPOSE $bootnode_port
