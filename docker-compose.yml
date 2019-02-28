@@ -98,7 +98,7 @@ services:
       context: ./Docker
       dockerfile: ./weather_service/Dockerfile
     ports:
-    - 4040:4040
+    - ${WEATHERCHAIN_UI_PORT}:${WEATHERCHAIN_UI_PORT}
     container_name: weather_service
 
   weatherchain_oracle:

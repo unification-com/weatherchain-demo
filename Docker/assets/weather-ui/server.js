@@ -38,14 +38,14 @@ app.get('/watch', function(req, res) {
     });
 });
 
-app.listen(4040);
-console.log('4040 is the magic port');
+app.listen(process.env.WEATHERCHAIN_UI_PORT);
+console.log(process.env.WEATHERCHAIN_UI_PORT + ' is the magic port');
 
 console.log( "=====================================");
 console.log( "= WEATHER SERVICE UI READY          =");
 console.log( "= ------------------------          =");
 console.log( "=                                   =");
 console.log( "= open:                             =");
-console.log( "= http://localhost:4040             =");
+console.log( "= http://localhost:" + process.env.WEATHERCHAIN_UI_PORT + "             =");
 console.log( "=                                   =");
 console.log( "=====================================");
