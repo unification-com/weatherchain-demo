@@ -1,20 +1,12 @@
 FROM node:8
 
-COPY ./assets/weather-oracle-contract /root/weather-oracle-contract
-COPY ./assets/build/.env /root/weather-oracle-contract/.env
-COPY ./assets/weather-oracle-service /root/weather-oracle-service
-COPY ./assets/build/.env /root/weather-oracle-service/.env
-COPY ./assets/weather-ui /root/weather-ui
-COPY ./assets/build/.env /root/weather-ui/.env
-COPY ./assets/scripts/deploy_weather_service.sh /root/deploy_weather_service.sh
+COPY ./assets/ /root/
 
-RUN chmod +x /root/deploy_weather_service.sh
+RUN chmod +x /root/scripts/deploy_weather_service.sh
 
 WORKDIR /root/weather-oracle-contract
 
-RUN npm install -g truffle
-RUN npm install
-RUN truffle compile
+RUN npm install -g truffle && npm install
 
 WORKDIR /root/weather-oracle-service
 RUN npm install
@@ -22,4 +14,4 @@ RUN npm install
 WORKDIR /root/weather-ui
 RUN npm install
 
-CMD cd /root && ./deploy_weather_service.sh
+CMD cd /root && ./scripts/deploy_weather_service.sh
