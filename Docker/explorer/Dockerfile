@@ -9,14 +9,20 @@ WORKDIR "/opt/blockchain-explorer"
 RUN git checkout c6e12f1 && \
     npm install
 
-# change port to 8081
-RUN grep -lr -e '8080' ./bin/www | xargs sed -i 's/8080/8081/g' && \
-    sed -i "s/localhost:8545/localhost:8547/g" views/layout/default_layout.jade && \
-    grep -lr -e ' ETH' * | xargs sed -i 's/ ETH/ RAIN/g' && \
+ARG workchain_rpc_port
+ARG workchain_explorer_port
+ARG coin_sym
+
+# change port from 8080 to configured port
+RUN sed -i -E "s/8080/${workchain_explorer_port}/g" bin/www && \
+    sed -i -E "s/localhost:8545/localhost:${workchain_rpc_port}/g" views/layout/default_layout.jade && \
+    grep -lr -e ' ETH' * | xargs sed -i -E "s/ ETH/ ${coin_sym}/g" && \
     grep -lr -e 'Ethereum' * | xargs sed -i 's/Ethereum/Weatherchain/g' && \
     grep -lr -e 'Ether' * | xargs sed -i 's/Ether/Weatherchain/g'&& \
-    grep -rl -e '(ethusd' * | xargs sed -i 's/(ethusd/(0.1/g'
+    grep -rl -e '(ethusd' * | xargs sed -i 's/(ethusd/(0.01/g'
+
+ENV explorer_port=""
 
 CMD npm run start
 
-EXPOSE 8081
+EXPOSE $workchain_explorer_port

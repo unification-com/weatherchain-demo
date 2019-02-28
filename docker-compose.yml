@@ -76,13 +76,18 @@ services:
     hostname: weatherchain_explorer
     depends_on:
     - weatherchain_node_1
-    environment:
-    - rpcport=${WORKCHAIN_RPC_PORT}
     ports:
-    - 8081:8081
+    - ${WORKCHAIN_EXPLORER_PORT}:${WORKCHAIN_EXPLORER_PORT}
+    environment:
+    - workchain_explorer_port=${WORKCHAIN_EXPLORER_PORT}
     build:
       context: ./Docker
       dockerfile: ./explorer/Dockerfile
+      args:
+        workchain_explorer_port: ${WORKCHAIN_EXPLORER_PORT}
+        workchain_rpc_port: ${WORKCHAIN_RPC_PORT}
+        coin_sym: ${WORKCHAIN_COIN_SYM}
+
     container_name: weatherchain_explorer
 
   weather_service:
