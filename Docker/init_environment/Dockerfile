@@ -19,26 +19,23 @@ RUN mkdir /root/.ssh && \
     mkdir -p ${GOPATH}/src/github.com/unification-com
 
 RUN cd ${GOPATH}/src/github.com/unification-com && \
-    git clone https://github.com/unification-com/mainchain.git
+    git clone https://github.com/unification-com/mainchain.git && \
+    go install github.com/unification-com/mainchain/cmd/bootnode
 
-RUN go install github.com/unification-com/mainchain/cmd/bootnode
 
-
-COPY ./assets/init /root/init
-COPY ./assets/scripts/init_workchain.sh /root/init_workchain.sh
+COPY ./assets/ /root/
 
 WORKDIR /root
 
-RUN cd /root && git clone https://github.com/unification-com/workchain-root-contract.git
-
-RUN chmod +x init_workchain.sh
+RUN chmod +x /root/scripts/init_workchain.sh && \
+    cd /root && \
+    git clone https://github.com/unification-com/workchain-root-contract.git
 
 WORKDIR /root/init
 
 RUN npm install
 
 WORKDIR /root/workchain-root-contract
-RUN npm install -g truffle
-RUN npm install
+RUN npm install -g truffle && npm install
 
-CMD cd /root && ./init_workchain.sh
+CMD cd /root && ./scripts/init_workchain.sh
