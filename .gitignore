@@ -125,3 +125,4 @@ node_modules/
 /log.txt
 /docker-compose.override.yml
 /.is_built
+/Docker/assets/build/

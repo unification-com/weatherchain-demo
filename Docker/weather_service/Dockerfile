@@ -1,11 +1,11 @@
 FROM node:8
 
 COPY ./assets/weather-oracle-contract /root/weather-oracle-contract
-COPY ./assets/.env /root/weather-oracle-contract/.env
+COPY ./assets/build/.env /root/weather-oracle-contract/.env
 COPY ./assets/weather-oracle-service /root/weather-oracle-service
-COPY ./assets/.env /root/weather-oracle-service/.env
+COPY ./assets/build/.env /root/weather-oracle-service/.env
 COPY ./assets/weather-ui /root/weather-ui
-COPY ./assets/.env /root/weather-ui/.env
+COPY ./assets/build/.env /root/weather-ui/.env
 COPY ./assets/scripts/deploy_weather_service.sh /root/deploy_weather_service.sh
 
 RUN chmod +x /root/deploy_weather_service.sh

@@ -17,7 +17,7 @@ ARG privatekey
 ARG genesis
 RUN echo $password > /root/.accountpassword
 RUN echo $privatekey > /root/.privatekey
-ADD ./assets/$genesis /root/assets/genesis.json
+ADD ./assets/build/$genesis /root/assets/genesis.json
 RUN geth init /root/assets/genesis.json
 RUN geth account import --password /root/.accountpassword  /root/.privatekey
 

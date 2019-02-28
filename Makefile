@@ -26,8 +26,9 @@ help:
 # BUILD=dev make init
 init:
 	$(MAKE) init-prepare
+	@mkdir -p $(WORKCHAIN_ASSETS_DIR)/build
 	# Copy user configured weatherchain.$(BUILD).env to assets, so builders can modify
-	@cp $(ROOT_DIR)/weatherchain.$(BUILD).env $(WORKCHAIN_ASSETS_DIR)/.env
+	@cp $(ROOT_DIR)/weatherchain.$(BUILD).env $(WORKCHAIN_ASSETS_DIR)/build/.env
 	@cp $(ROOT_DIR)/docker-compose.$(BUILD).yml $(ROOT_DIR)/docker-compose.override.yml
 	@cd $(ROOT_DIR)/Docker && docker build -f init_environment/Dockerfile -t init_weatherchain_environment .
 ifeq ($(BUILD),aws_testnet)
@@ -37,7 +38,7 @@ else
 	@echo "Initialising environment something else: $(BUILD)"
 	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets --ip 192.168.43.124 --network mainchain_chainnet init_weatherchain_environment
 endif
-	@cp $(WORKCHAIN_ASSETS_DIR)/.env $(ROOT_DIR)/.env
+	@cp $(WORKCHAIN_ASSETS_DIR)/build/.env $(ROOT_DIR)/.env
 
 # Build deployment Docker environment, based on the initialised variables.
 # Must run make init first
@@ -79,12 +80,10 @@ info:
 
 clean:
 	@rm -f $(ROOT_DIR)/.env
-	@rm -f $(WORKCHAIN_ASSETS_DIR)/.env
-	@rm -f $(WORKCHAIN_ASSETS_DIR)/bootnode.key
-	@rm -f $(WORKCHAIN_ASSETS_DIR)/weatherchain_genesis.json
+	@rm -rf $(WORKCHAIN_ASSETS_DIR)/build
 	@rm -f $(ROOT_DIR)/docker-compose.override.yml
 	@rm -f $(ROOT_DIR)/.is_built
 
 config:
-	test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n\nfirst. Exiting...\n"; exit 1; }
+	test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n\nfirst to generate composition. Exiting...\n"; exit 1; }
 	docker-compose -f docker-compose.yml -f docker-compose.override.yml config

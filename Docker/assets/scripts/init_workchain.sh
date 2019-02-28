@@ -2,7 +2,7 @@
 
 cd /root/init
 
-cat /root/assets/templates/autogen.env >> /root/assets/.env
+cat /root/assets/templates/autogen.env >> /root/assets/build/.env
 
 # Generate a unique workchain ID
 CHAIN_ID=$(od -N 4 -t uL -An /dev/urandom | tr -d " ")
@@ -11,57 +11,57 @@ CHAIN_ID=$(od -N 4 -t uL -An /dev/urandom | tr -d " ")
 MNEMONIC=$(node init.js mnemonic)
 
 #Generate bootnode key
-/root/.go/bin/bootnode -genkey /root/assets/bootnode.key
-BOOTNODE_ID=$(/root/.go/bin/bootnode -nodekey /root/assets/bootnode.key -writeaddress)
-chmod +rw /root/assets/bootnode.key
-sed -i "s/BOOTNODE_ID=/BOOTNODE_ID=$BOOTNODE_ID/g" /root/assets/.env
+/root/.go/bin/bootnode -genkey /root/assets/build/bootnode.key
+BOOTNODE_ID=$(/root/.go/bin/bootnode -nodekey /root/assets/build/bootnode.key -writeaddress)
+chmod +rw /root/assets/build/bootnode.key
+sed -i "s/BOOTNODE_ID=/BOOTNODE_ID=$BOOTNODE_ID/g" /root/assets/build/.env
 
 # Write Mnemonic to .env
-sed -i "s/MNEMONIC=/MNEMONIC=$MNEMONIC/g" /root/assets/.env
+sed -i "s/MNEMONIC=/MNEMONIC=$MNEMONIC/g" /root/assets/build/.env
 
 # Get EV and RPC node addresses and keys, then write to .env
 EV1_PUBLIC_ADDRESS=$(node init.js address "$MNEMONIC" 0)
-sed -i "s/EV1_PUBLIC_ADDRESS=/EV1_PUBLIC_ADDRESS=$EV1_PUBLIC_ADDRESS/g" /root/assets/.env
+sed -i "s/EV1_PUBLIC_ADDRESS=/EV1_PUBLIC_ADDRESS=$EV1_PUBLIC_ADDRESS/g" /root/assets/build/.env
 
 EV1_PRIVATE_KEY=$(node init.js private_key "$MNEMONIC" 0)
-sed -i "s/EV1_PRIVATE_KEY=/EV1_PRIVATE_KEY=$EV1_PRIVATE_KEY/g" /root/assets/.env
+sed -i "s/EV1_PRIVATE_KEY=/EV1_PRIVATE_KEY=$EV1_PRIVATE_KEY/g" /root/assets/build/.env
 
 EV2_PUBLIC_ADDRESS=$(node init.js address "$MNEMONIC" 1)
-sed -i "s/EV2_PUBLIC_ADDRESS=/EV2_PUBLIC_ADDRESS=$EV2_PUBLIC_ADDRESS/g" /root/assets/.env
+sed -i "s/EV2_PUBLIC_ADDRESS=/EV2_PUBLIC_ADDRESS=$EV2_PUBLIC_ADDRESS/g" /root/assets/build/.env
 
 EV2_PRIVATE_KEY=$(node init.js private_key "$MNEMONIC" 1)
-sed -i "s/EV2_PRIVATE_KEY=/EV2_PRIVATE_KEY=$EV2_PRIVATE_KEY/g" /root/assets/.env
+sed -i "s/EV2_PRIVATE_KEY=/EV2_PRIVATE_KEY=$EV2_PRIVATE_KEY/g" /root/assets/build/.env
 
 RPC_NODE_PUBLIC_ADDRESS=$(node init.js address "$MNEMONIC" 2)
-sed -i "s/RPC_NODE_PUBLIC_ADDRESS=/RPC_NODE_PUBLIC_ADDRESS=$RPC_NODE_PUBLIC_ADDRESS/g" /root/assets/.env
+sed -i "s/RPC_NODE_PUBLIC_ADDRESS=/RPC_NODE_PUBLIC_ADDRESS=$RPC_NODE_PUBLIC_ADDRESS/g" /root/assets/build/.env
 
 RPC_NODE_PRIVATE_KEY=$(node init.js private_key "$MNEMONIC" 2)
-sed -i "s/RPC_NODE_PRIVATE_KEY=/RPC_NODE_PRIVATE_KEY=$RPC_NODE_PRIVATE_KEY/g" /root/assets/.env
+sed -i "s/RPC_NODE_PRIVATE_KEY=/RPC_NODE_PRIVATE_KEY=$RPC_NODE_PRIVATE_KEY/g" /root/assets/build/.env
 
 # Write EV1 and EV2 public addresses to "WORKCHAIN_EVS" variable in .env
 # Used when the Workchain Root smart contract is deployed
-sed -i "s/WORKCHAIN_EV_2/$EV2_PUBLIC_ADDRESS/g" /root/assets/.env
-sed -i "s/WORKCHAIN_EV_1/$EV1_PUBLIC_ADDRESS/g" /root/assets/.env
+sed -i "s/WORKCHAIN_EV_2/$EV2_PUBLIC_ADDRESS/g" /root/assets/build/.env
+sed -i "s/WORKCHAIN_EV_1/$EV1_PUBLIC_ADDRESS/g" /root/assets/build/.env
 
 # Set the Workchain's CHain ID in .env
-sed -i "s/WORKCHAIN_NETWORK_ID=/WORKCHAIN_NETWORK_ID=$CHAIN_ID/g" /root/assets/.env
+sed -i "s/WORKCHAIN_NETWORK_ID=/WORKCHAIN_NETWORK_ID=$CHAIN_ID/g" /root/assets/build/.env
 
 # Psuedo generate the genesis.json
-cp /root/assets/templates/genesis_template.json /root/assets/weatherchain_genesis.json
-sed -i "s/SEALERADDRESSES/${EV1_PUBLIC_ADDRESS:2}${EV2_PUBLIC_ADDRESS:2}/g" /root/assets/weatherchain_genesis.json
+cp /root/assets/templates/genesis_template.json /root/assets/build/weatherchain_genesis.json
+sed -i "s/SEALERADDRESSES/${EV1_PUBLIC_ADDRESS:2}${EV2_PUBLIC_ADDRESS:2}/g" /root/assets/build/weatherchain_genesis.json
 
-sed -i "s/EV1/${EV1_PUBLIC_ADDRESS:2}/g" /root/assets/weatherchain_genesis.json
-sed -i "s/EV2/${EV2_PUBLIC_ADDRESS:2}/g" /root/assets/weatherchain_genesis.json
-sed -i "s/RPC/${RPC_NODE_PUBLIC_ADDRESS:2}/g" /root/assets/weatherchain_genesis.json
-sed -i "s/WORKCHAIN_ID/${CHAIN_ID}/g" /root/assets/weatherchain_genesis.json
+sed -i "s/EV1/${EV1_PUBLIC_ADDRESS:2}/g" /root/assets/build/weatherchain_genesis.json
+sed -i "s/EV2/${EV2_PUBLIC_ADDRESS:2}/g" /root/assets/build/weatherchain_genesis.json
+sed -i "s/RPC/${RPC_NODE_PUBLIC_ADDRESS:2}/g" /root/assets/build/weatherchain_genesis.json
+sed -i "s/WORKCHAIN_ID/${CHAIN_ID}/g" /root/assets/build/weatherchain_genesis.json
 
 # Write the genesis.json to .env. Used when deploying the Workchain Root smart contract
 while IFS='' read -r line || [[ -n "$line" ]]; do
-    sed -i "s/WORKCHAIN_GENESIS=/WORKCHAIN_GENESIS=${line}/g" /root/assets/.env
-done < /root/assets/weatherchain_genesis.json
+    sed -i "s/WORKCHAIN_GENESIS=/WORKCHAIN_GENESIS=${line}/g" /root/assets/build/.env
+done < /root/assets/build/weatherchain_genesis.json
 
 # Fund the generated addresses on Mainchain using the faucet
-MAINCHAIN_FAUCET_URL=$(grep 'MAINCHAIN_FAUCET_URL' /root/assets/.env)
+MAINCHAIN_FAUCET_URL=$(grep 'MAINCHAIN_FAUCET_URL' /root/assets/build/.env)
 echo "fund $EV1_PUBLIC_ADDRESS"
 wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=$EV1_PUBLIC_ADDRESS
 sleep 6s
@@ -73,16 +73,16 @@ wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=$RPC_NODE_PUBLIC_ADDRE
 
 # Copy the generated .env to the Smart Contract deployment directory
 # since it needs some values during deployment
-cp /root/assets/.env /root/workchain-root-contract/.env
+cp /root/assets/build/.env /root/workchain-root-contract/.env
 
 # Compile Workchain Root smart contract
-MAINCHAIN_NETWORK_ID=$(grep 'MAINCHAIN_NETWORK_ID' /root/assets/.env)
+MAINCHAIN_NETWORK_ID=$(grep 'MAINCHAIN_NETWORK_ID' /root/assets/build/.env)
 cd /root/workchain-root-contract
 truffle compile
 truffle migrate --reset
 WORKCHAIN_ROOT_CONTRACT_ADDRESS=$(node abi.js addr ${MAINCHAIN_NETWORK_ID##*=})
-sed -i "s/WORKCHAIN_ROOT_CONTRACT_ADDRESS=/WORKCHAIN_ROOT_CONTRACT_ADDRESS=${WORKCHAIN_ROOT_CONTRACT_ADDRESS}/g" /root/assets/.env
-sed -i "s/WORKCHAIN_ROOT_ABI=/WORKCHAIN_ROOT_ABI=$(node abi.js)/g" /root/assets/.env
+sed -i "s/WORKCHAIN_ROOT_CONTRACT_ADDRESS=/WORKCHAIN_ROOT_CONTRACT_ADDRESS=${WORKCHAIN_ROOT_CONTRACT_ADDRESS}/g" /root/assets/build/.env
+sed -i "s/WORKCHAIN_ROOT_ABI=/WORKCHAIN_ROOT_ABI=$(node abi.js)/g" /root/assets/build/.env
 
 echo "======================================="
 echo "= ENVIRONMENT INITIALISATION COMPLETE ="
