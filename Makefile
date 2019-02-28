@@ -38,6 +38,9 @@ init:
 	# Copy user configured weatherchain.$(BUILD).env to assets, so builders can modify
 	@cp $(ROOT_DIR)/weatherchain.$(BUILD).env $(WORKCHAIN_ASSETS_DIR)/build/.env
 
+	@echo "\n\nEdit assets/build/.env as required, then press RETURN to continue\n\n"; \
+    read dummy_input;
+
 	# Copy selected environment's docker-compose Override
 	@cp $(ROOT_DIR)/docker-compose.$(BUILD).yml $(ROOT_DIR)/docker-compose.override.yml
 
