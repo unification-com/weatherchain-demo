@@ -25,7 +25,7 @@ RUN go install github.com/unification-com/mainchain/cmd/bootnode
 
 
 COPY ./assets/init /root/init
-COPY ./assets/init_workchain.sh /root/init_workchain.sh
+COPY ./assets/scripts/init_workchain.sh /root/init_workchain.sh
 
 WORKDIR /root
 
