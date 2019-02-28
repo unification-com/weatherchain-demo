@@ -19,7 +19,7 @@ services:
     - bootnodeId=${BOOTNODE_ID}
     - bootnodeIp=${BOOTNODE_IP}
     - chainId=${WORKCHAIN_NETWORK_ID}
-    - listenport=30305
+    - listenport=${WORKCHAIN_EV1_LISTEN_PORT}
     - bootnode_port=${BOOTNODE_PORT}
     build:
       context: ./Docker
@@ -30,7 +30,7 @@ services:
         genesis: weatherchain_genesis.json
     container_name: weatherchain_validator_1
     ports:
-    - 30305:30305
+    - ${WORKCHAIN_EV1_LISTEN_PORT}:${WORKCHAIN_EV1_LISTEN_PORT}/udp
 
   weatherchain_validator_2:
     hostname: weatherchain_validator_2
@@ -41,7 +41,7 @@ services:
     - bootnodeId=${BOOTNODE_ID}
     - bootnodeIp=${BOOTNODE_IP}
     - chainId=${WORKCHAIN_NETWORK_ID}
-    - listenport=30306
+    - listenport=${WORKCHAIN_EV2_LISTEN_PORT}
     - bootnode_port=${BOOTNODE_PORT}
     build:
       context: ./Docker
@@ -52,7 +52,7 @@ services:
         genesis: weatherchain_genesis.json
     container_name: weatherchain_validator_2
     ports:
-    - 30306:30306
+    - ${WORKCHAIN_EV2_LISTEN_PORT}:${WORKCHAIN_EV2_LISTEN_PORT}/udp
 
   weatherchain_node_1:
     hostname: weatherchain_node_1
@@ -63,7 +63,7 @@ services:
     - bootnodeId=${BOOTNODE_ID}
     - bootnodeIp=${BOOTNODE_IP}
     - chainId=${WORKCHAIN_NETWORK_ID}
-    - listenport=30307
+    - listenport=${WORKCHAIN_RPC_NODE_LISTEN_PORT}
     - rpcport=${WORKCHAIN_RPC_PORT}
     - bootnode_port=${BOOTNODE_PORT}
     build:
