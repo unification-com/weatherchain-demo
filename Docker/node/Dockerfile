@@ -12,24 +12,23 @@ ARG binary
 RUN apt-get update \
      && apt-get install -y ethereum
 
-ARG password
-ARG privatekey
-ARG genesis
-RUN echo $password > /root/.accountpassword
-RUN echo $privatekey > /root/.privatekey
-ADD ./assets/build/$genesis /root/assets/genesis.json
+ARG WALLET_PASS
+ARG PRIVATE_KEY
+ARG GENESIS_JSON_FILENAME
+RUN echo $WALLET_PASS > /root/.walletpassword
+RUN echo $PRIVATE_KEY > /root/.privatekey
+ADD ./assets/build/$GENESIS_JSON_FILENAME /root/assets/genesis.json
 RUN geth init /root/assets/genesis.json
-RUN geth account import --password /root/.accountpassword  /root/.privatekey
+RUN geth account import --password /root/.walletpassword  /root/.privatekey
 
-ENV address=""
-ENV bootnodeId=""
-ENV bootnodeIp=""
-ENV chainId=""
-ENV listenport=""
-ENV bootnode_port=""
-ENV rpcport=""
+ENV BOOTNODE_ID=""
+ENV BOOTNODE_IP=""
+ENV BOOTNODE_PORT=""
+ENV WORKCHAIN_NETWORK_ID=""
+ENV GETH_LISTEN_PORT=""
+ENV RPC_PORT=""
 
-CMD exec geth --bootnodes "enode://$bootnodeId@$bootnodeIp:$bootnode_port" --networkid "$chainId" --verbosity=4 --rpc --rpcaddr "0.0.0.0" --rpcport "$rpcport" --rpcapi "eth,web3,net,admin,debug,db" --rpccorsdomain "*" --syncmode="full" --port $listenport
+CMD exec geth --bootnodes "enode://$BOOTNODE_ID@$BOOTNODE_IP:$BOOTNODE_PORT" --networkid "$WORKCHAIN_NETWORK_ID" --verbosity=4 --rpc --rpcaddr "0.0.0.0" --rpcport "$RPC_PORT" --rpcapi "eth,web3,net,admin,debug,db" --rpccorsdomain "*" --syncmode="full" --port $GETH_LISTEN_PORT
 
-EXPOSE $rpcport
-EXPOSE $listenport
+EXPOSE $RPC_PORT
+EXPOSE $GETH_LISTEN_PORT

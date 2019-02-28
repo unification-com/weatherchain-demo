@@ -8,71 +8,70 @@ services:
     ports:
     - ${BOOTNODE_PORT}:${BOOTNODE_PORT}/udp
     environment:
-    - bootnode_port=${BOOTNODE_PORT}
+    - BOOTNODE_PORT=${BOOTNODE_PORT}
 
   weatherchain_validator_1:
     hostname: weatherchain_validator_1
     depends_on:
     - weatherchain_bootnode
     environment:
-    - address=${EV1_PUBLIC_ADDRESS}
-    - bootnodeId=${BOOTNODE_ID}
-    - bootnodeIp=${BOOTNODE_IP}
-    - chainId=${WORKCHAIN_NETWORK_ID}
-    - listenport=${WORKCHAIN_EV1_LISTEN_PORT}
-    - bootnode_port=${BOOTNODE_PORT}
+    - PUBLIC_ADDRESS=${EV1_PUBLIC_ADDRESS}
+    - BOOTNODE_ID=${BOOTNODE_ID}
+    - BOOTNODE_IP=${BOOTNODE_IP}
+    - BOOTNODE_PORT=${BOOTNODE_PORT}
+    - WORKCHAIN_NETWORK_ID=${WORKCHAIN_NETWORK_ID}
+    - GETH_LISTEN_PORT=${WORKCHAIN_EV1_GETH_LISTEN_PORT}
     build:
       context: ./Docker
       dockerfile: ./validator/Dockerfile
       args:
-        privatekey: ${EV1_PRIVATE_KEY}
-        password: ${EV1_WALLET_PASS}
-        genesis: weatherchain_genesis.json
+        PRIVATE_KEY: ${EV1_PRIVATE_KEY}
+        WALLET_PASS: ${EV1_WALLET_PASS}
+        GENESIS_JSON_FILENAME: ${WORKCHAIN_GENESIS_JSON_FILENAME}
     container_name: weatherchain_validator_1
     ports:
-    - ${WORKCHAIN_EV1_LISTEN_PORT}:${WORKCHAIN_EV1_LISTEN_PORT}/udp
+    - ${WORKCHAIN_EV1_GETH_LISTEN_PORT}:${WORKCHAIN_EV1_GETH_LISTEN_PORT}/udp
 
   weatherchain_validator_2:
     hostname: weatherchain_validator_2
     depends_on:
     - weatherchain_bootnode
     environment:
-    - address=${EV2_PUBLIC_ADDRESS}
-    - bootnodeId=${BOOTNODE_ID}
-    - bootnodeIp=${BOOTNODE_IP}
-    - chainId=${WORKCHAIN_NETWORK_ID}
-    - listenport=${WORKCHAIN_EV2_LISTEN_PORT}
-    - bootnode_port=${BOOTNODE_PORT}
+    - PUBLIC_ADDRESS=${EV2_PUBLIC_ADDRESS}
+    - BOOTNODE_ID=${BOOTNODE_ID}
+    - BOOTNODE_IP=${BOOTNODE_IP}
+    - BOOTNODE_PORT=${BOOTNODE_PORT}
+    - WORKCHAIN_NETWORK_ID=${WORKCHAIN_NETWORK_ID}
+    - GETH_LISTEN_PORT=${WORKCHAIN_EV2_GETH_LISTEN_PORT}
     build:
       context: ./Docker
       dockerfile: ./validator/Dockerfile
       args:
-        privatekey: ${EV2_PRIVATE_KEY}
-        password: ${EV2_WALLET_PASS}
-        genesis: weatherchain_genesis.json
+        PRIVATE_KEY: ${EV2_PRIVATE_KEY}
+        WALLET_PASS: ${EV2_WALLET_PASS}
+        GENESIS_JSON_FILENAME: ${WORKCHAIN_GENESIS_JSON_FILENAME}
     container_name: weatherchain_validator_2
     ports:
-    - ${WORKCHAIN_EV2_LISTEN_PORT}:${WORKCHAIN_EV2_LISTEN_PORT}/udp
+    - ${WORKCHAIN_EV2_GETH_LISTEN_PORT}:${WORKCHAIN_EV2_GETH_LISTEN_PORT}/udp
 
   weatherchain_node_1:
     hostname: weatherchain_node_1
     depends_on:
     - weatherchain_validator_1
     environment:
-    - address=${RPC_NODE_PUBLIC_ADDRESS}
-    - bootnodeId=${BOOTNODE_ID}
-    - bootnodeIp=${BOOTNODE_IP}
-    - chainId=${WORKCHAIN_NETWORK_ID}
-    - listenport=${WORKCHAIN_RPC_NODE_LISTEN_PORT}
-    - rpcport=${WORKCHAIN_RPC_PORT}
-    - bootnode_port=${BOOTNODE_PORT}
+    - BOOTNODE_ID=${BOOTNODE_ID}
+    - BOOTNODE_IP=${BOOTNODE_IP}
+    - BOOTNODE_PORT=${BOOTNODE_PORT}
+    - WORKCHAIN_NETWORK_ID=${WORKCHAIN_NETWORK_ID}
+    - GETH_LISTEN_PORT=${WORKCHAIN_RPC_NODE_GETH_LISTEN_PORT}
+    - RPC_PORT=${WORKCHAIN_RPC_PORT}
     build:
       context: ./Docker
       dockerfile: ./node/Dockerfile
       args:
-        privatekey: ${RPC_NODE_PRIVATE_KEY}
-        password: ${RPC_NODE_WALLET_PASS}
-        genesis: weatherchain_genesis.json
+        PRIVATE_KEY: ${RPC_NODE_PRIVATE_KEY}
+        WALLET_PASS: ${RPC_NODE_WALLET_PASS}
+        GENESIS_JSON_FILENAME: ${WORKCHAIN_GENESIS_JSON_FILENAME}
     container_name: weatherchain_node_1
     ports:
     - ${WORKCHAIN_RPC_PORT}:${WORKCHAIN_RPC_PORT}
@@ -84,14 +83,14 @@ services:
     ports:
     - ${WORKCHAIN_EXPLORER_PORT}:${WORKCHAIN_EXPLORER_PORT}
     environment:
-    - workchain_explorer_port=${WORKCHAIN_EXPLORER_PORT}
+    - WORKCHAIN_EXPLORER_PORT=${WORKCHAIN_EXPLORER_PORT}
     build:
       context: ./Docker
       dockerfile: ./explorer/Dockerfile
       args:
-        workchain_explorer_port: ${WORKCHAIN_EXPLORER_PORT}
-        workchain_rpc_port: ${WORKCHAIN_RPC_PORT}
-        coin_sym: ${WORKCHAIN_COIN_SYM}
+        WORKCHAIN_EXPLORER_PORT: ${WORKCHAIN_EXPLORER_PORT}
+        WORKCHAIN_RPC_PORT: ${WORKCHAIN_RPC_PORT}
+        COIN_SYM: ${WORKCHAIN_COIN_SYM}
 
     container_name: weatherchain_explorer
 
@@ -115,10 +114,10 @@ services:
       dockerfile: ./workchain_oracle/Dockerfile
     container_name: weatherchain_oracle
     environment:
-    - mainchain_rpc=${MAINCHAIN_WEB3_PROVIDER_URL}
-    - workchain_rpc=${WORKCHAIN_WEB3_PROVIDER_URL}
-    - private_key=${EV1_PRIVATE_KEY}
-    - workchain_root_address=${WORKCHAIN_ROOT_CONTRACT_ADDRESS}
-    - timeout=${WORKCHAIN_ROOT_WRITE_TIMEOUT}
-    - workchain_chain_id=${WORKCHAIN_NETWORK_ID}
+    - MAINCHAIN_WEB3_PROVIDER_URL=${MAINCHAIN_WEB3_PROVIDER_URL}
+    - WORKCHAIN_WEB3_PROVIDER_URL=${WORKCHAIN_WEB3_PROVIDER_URL}
+    - PRIVATE_KEY=${EV1_PRIVATE_KEY}
+    - WORKCHAIN_ROOT_CONTRACT_ADDRESS=${WORKCHAIN_ROOT_CONTRACT_ADDRESS}
+    - WORKCHAIN_ROOT_WRITE_TIMEOUT=${WORKCHAIN_ROOT_WRITE_TIMEOUT}
+    - WORKCHAIN_NETWORK_ID=${WORKCHAIN_NETWORK_ID}
 

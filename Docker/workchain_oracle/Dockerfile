@@ -27,14 +27,14 @@ RUN mkdir /root/.ssh && \
 
 ENV PATH="/usr/local/go/bin:/root/.go/bin:${PATH}"
 
-ENV mainchain_rpc=""
-ENV workchain_rpc=""
-ENV private_key=""
-ENV workchain_root_address=""
-ENV timeout=""
-ENV workchain_chain_id=""
+ENV MAINCHAIN_WEB3_PROVIDER_URL=""
+ENV WORKCHAIN_WEB3_PROVIDER_URL=""
+ENV PRIVATE_KEY=""
+ENV WORKCHAIN_ROOT_CONTRACT_ADDRESS=""
+ENV WORKCHAIN_ROOT_WRITE_TIMEOUT=""
+ENV WORKCHAIN_NETWORK_ID=""
 
 RUN echo "go run /root/.go/src/github.com/unification-com/workchain-root-oracle/oracle.go" >> /root/.bash_history && \
     echo "alias ll='ls -la'" >> /root/.bashrc
 
-CMD go run /root/.go/src/github.com/unification-com/workchain-root-oracle/oracle.go "$workchain_rpc" "$mainchain_rpc" "$private_key" "$workchain_root_address" $timeout $workchain_chain_id 2>&1 | tee /root/oracle_log.txt
+CMD go run /root/.go/src/github.com/unification-com/workchain-root-oracle/oracle.go "$WORKCHAIN_WEB3_PROVIDER_URL" "$MAINCHAIN_WEB3_PROVIDER_URL" "$PRIVATE_KEY" "$WORKCHAIN_ROOT_CONTRACT_ADDRESS" $WORKCHAIN_ROOT_WRITE_TIMEOUT $WORKCHAIN_NETWORK_ID 2>&1 | tee /root/oracle_log.txt

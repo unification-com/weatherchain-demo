@@ -8,14 +8,13 @@ WORKDIR "/root"
 
 RUN add-apt-repository -y ppa:ethereum/ethereum
 
-ARG binary
 RUN apt-get update \
      && apt-get install -y ethereum
 
 COPY ./assets/build/bootnode.key /root/assets/bootnode.key
 
-ENV bootnode_port=""
+ENV BOOTNODE_PORT=""
 
-CMD exec bootnode -nodekey /root/assets/bootnode.key -verbosity 4 --addr :$bootnode_port
+CMD exec bootnode -nodekey /root/assets/bootnode.key -verbosity 4 --addr :$BOOTNODE_PORT
 
-EXPOSE $bootnode_port
+EXPOSE $BOOTNODE_PORT
