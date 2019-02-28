@@ -35,7 +35,7 @@
     <h1 class="mt-5">Latest Weatherchain Block recorded on Mainchain</h1>
     <p class="lead">
         <strong>Status: </strong> <span id="status"></span><br>
-        <h3>WeatherChain Block #<span id="block_num"></span> Submitted to Mainchain</h3>
+        <h3>WeatherChain Block #<span id="block_num"></span> Submitted to Mainchain (<a href="#" id="validate_link">Validate block</a>)</h3>
         <strong>Hash:</strong> <span id="hash"></span><br>
         <strong>Parent Hash:</strong> <span id="parent_hash"></span><br>
         <strong>Tx Root:</strong> <span id="tx_root"></span><br>
@@ -43,10 +43,12 @@
         <strong>Sealer:</strong> <span id="sealer"></span><br>
         <strong>Current Time:</strong> <span id="block_time"></span><br>
 
+        <br>
+
         <h3>Mainchain Info</h3>
         <strong>WeatherChain's Workchain Root Contract on Mainchain:</strong> <a href="<%= MAINCHAIN_EXPLORER_URL%>/address/<%= WORKCHAIN_ROOT_CONTRACT_ADDRESS%>" target="_blank"><%= WORKCHAIN_ROOT_CONTRACT_ADDRESS%></a><br>
         <strong>Submitted in Mainchain Tx:</strong> <a target="_blank" id="tx"></a><br>
-        <strong>Next check:</strong> <span id="next_block">5</span>
+        <strong>Next check:</strong> <span id="next_block"><%= WORKCHAIN_ROOT_WRITE_TIMEOUT%></span>
     </p>
 
     </main>
@@ -86,7 +88,7 @@
         updateWatcher();
         setInterval(function(){
             updateWatcher();
-        }, 5000);
+        }, <%= WORKCHAIN_ROOT_WRITE_TIMEOUT%> * 1000);
 
         setInterval(function(){
             nextCheck();
@@ -94,7 +96,7 @@
 
         function updateWatcher() {
             $('#status').text("Fetching data");
-            $('#next_block').text("6");
+            $('#next_block').text(<%= WORKCHAIN_ROOT_WRITE_TIMEOUT%> + 1);
             workchainEventWatcher.getLatestRecordedHeader(function(success, results) {
                 if(success && results.length > 0) {
                     let data = results[0];
@@ -113,6 +115,9 @@
                     $('#sunrise').text(data.returnValues.sunrise);
                     $('#sealer').text(data.returnValues.sealer);
                     $('#status').text("Success");
+
+                    $('#validate_link').attr('href','/validate?block=' + data.returnValues.height)
+
                 } else {
                     console.log(results);
                     $('#status').text("Please refresh to try again");

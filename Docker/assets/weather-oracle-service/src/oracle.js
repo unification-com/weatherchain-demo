@@ -44,7 +44,7 @@ const parseData = (body) => {
 };
 
 const restart = () => {
-  wait(process.env.WEATHER_SERVICE_TIMEOUT).then(start);
+  wait(process.env.WEATHER_SERVICE_TIMEOUT * 1000).then(start);
 };
 
 const wait = (milliseconds) => {

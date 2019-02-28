@@ -48,7 +48,7 @@
         <strong>Tx:</strong> <a target="_blank" id="tx"></a><br><br>
 
         <strong>Current Time:</strong> <span id="block_time"></span><br>
-        <strong>Next check:</strong> <span id="next_block">5</span>
+        <strong>Next check:</strong> <span id="next_block"><%= WEATHER_SERVICE_TIMEOUT%></span>
     </p>
 
     </main>
@@ -88,14 +88,14 @@
         updateWeather();
         setInterval(function(){
             updateWeather();
-         }, 5000);
+         }, <%= WEATHER_SERVICE_TIMEOUT%> * 1000);
 
         setInterval(function(){
             nextCheck();
         }, 1000);
 
          function updateWeather() {
-             $('#next_block').text("6");
+             $('#next_block').text(<%= WEATHER_SERVICE_TIMEOUT%> + 1);
              weatherService.getWeatherUpdate(function(results) {
 
                 let sunrise_date = new Date(0);

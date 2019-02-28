@@ -177,17 +177,23 @@
           return false;
         });
 
+        <% if (locals.BLOCK_NUM > 0) { %>
+        validateBlock(<%= BLOCK_NUM%>);
+        <% } %>
+
         function validateBlock(block_num) {
             workchainRoot.validateBlock(block_num, function(block, root_data) {
 
                 if(root_data.hash == '0x0000000000000000000000000000000000000000000000000000000000000000') {
-                  $('#no_data').text('No data stored in Worckchain Root for Block #' + block_num);
+                  $('#no_data').text('No data currently stored in Worckchain Root for Block #' + block_num);
                   $('#no_data').show();
                   $('#validation_container').hide();
                   return;
                 }
 
                 $('#validation_container').show();
+                $('#no_data').text('');
+                $('#no_data').hide();
 
                 $('#block_num_title').text(block_num);
 
