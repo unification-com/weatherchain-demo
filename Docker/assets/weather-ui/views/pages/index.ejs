@@ -32,7 +32,7 @@
     <!-- Begin page content -->
     <main role="main" class="container">
         <br>
-    <h1 class="mt-5">Weather Updates for London, UK</h1>
+    <h1 class="mt-5">Weather Updates for <span id="weather_loc"></span></h1>
     <p class="lead">
         <h3>Submitted in WeatherChain Block #: <a target="_blank" id="block_num"></a></h3>
         <strong>Weather:</strong> <img id="wicon" src="" alt=""> <span id="weather_desc"></span><br>
@@ -113,6 +113,9 @@
                 let icon_url = "http://openweathermap.org/img/w/" + icon + ".png"
                 $('#wicon').attr('src', icon_url);
                 $('#wicon').attr('alt', weather.description);
+
+                let weather_location = weather.location + ", " + weather.country;
+                $('#weather_loc').text(weather_location);
 
                 $('#block_num').text(data.blockNumber);
                 $('#block_num').attr('href','<%= WORKCHAIN_EXPLORER_URL%>/block/' + data.blockNumber);

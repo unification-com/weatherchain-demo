@@ -4,7 +4,9 @@ import request from "request-promise-native";
 
 import { updateWeather } from "./ethereum";
 
-const options = { uri: process.env.WEATHER_URL, json: true };
+const weather_uri = 'https://api.openweathermap.org/data/2.5/weather?q='+process.env.WEATHER_LOC+'&appid='+process.env.OPEN_WEATHER_API_KEY+'&units=metric'
+
+const options = { uri: weather_uri, json: true };
 
 const start = () => {
   request(options)
@@ -22,7 +24,9 @@ const parseData = (body) => {
         '"description": "' + body.weather[0].description.toString() + '",' +
         '"icon": "' + body.weather[0].icon.toString() + '",' +
         '"id": "' + body.weather[0].id.toString() + '",' +
-        '"main": "' + body.weather[0].main.toString() + '"' +
+        '"main": "' + body.weather[0].main.toString() + '",' +
+        '"location": "' + body.name.toString() + '",' +
+        '"country": "' + body.sys.country.toString() + '"' +
       '}';
       weatherDescription = weather;
       temperature = body.main.temp.toString();
