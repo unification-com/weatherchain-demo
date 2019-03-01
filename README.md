@@ -23,6 +23,14 @@ to bring up the environment.
 During the `make init` target, you will be prompted to customise your environment. This can be 
 done by editing the generated `./Docker/assets/build/.env` file.
 
+### Logging
+
+Logging can be enabled at runtime, by executing:
+
+`RUN_LOG=TRUE make run`
+
+This will save all `stdout` and `stderr` messages to `./log.txt` for debugging
+
 ## Viewing Weatherchain info
 
 You'll need to wait a minute or so for the environment to start running, and for the Weatherchain UI
@@ -62,7 +70,7 @@ it again. This will mean re-running the `make init` and `make build` scripts.
 
 ### Bringing it all down
 
-Bing down the Weatherchain composition by running:
+Bing down the Weatherchain composition by pressing <kbd>CTRL</kbd>+<kbd>C</kbd> then running:
 
 `make down`
 
