@@ -23,7 +23,7 @@ RUN mkdir /root/.ssh && \
     mkdir -p ${GOPATH}/src/github.com/unification-com && \
     cd ${GOPATH}/src/github.com/unification-com && \
     git clone https://github.com/unification-com/mainchain.git && \
-    git clone https://github.com/unification-com/workchain-root-oracle
+    git clone https://github.com/unification-com/oracle
 
 ENV PATH="/usr/local/go/bin:/root/.go/bin:${PATH}"
 
