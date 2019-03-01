@@ -33,9 +33,6 @@ help:
 # to run on the AWS testnet. Environment can be changed with:
 # BUILD=dev make init
 init:
-	$(MAKE) init-prepare
-	@mkdir -p $(WORKCHAIN_ASSETS_DIR)/build
-
 ifeq ($(filter $(BUILD),$(BUILD_ENVS)),)
 	@echo "\nERROR:"
 	@echo "------\n"
@@ -49,10 +46,15 @@ ifeq ($(filter $(BUILD),$(BUILD_ENVS)),)
 	@exit 1
 endif
 
+	$(MAKE) check-mainchain
+
+	$(MAKE) init-prepare
+	@mkdir -p $(WORKCHAIN_ASSETS_DIR)/build
+
 	# Copy user configured weatherchain.$(BUILD).env to assets, so builders can modify
 	@cp $(ROOT_DIR)/envs/weatherchain.$(BUILD).env $(WORKCHAIN_ASSETS_DIR)/build/.env
 
-	@echo "\n\nEdit assets/build/.env as required, then press RETURN to continue\n\n"; \
+	@echo "\n\nEdit ./Docker/assets/build/.env as required, then press RETURN to continue\n\n"; \
     read dummy_input;
 
 	# Copy selected environment's docker-compose Override
@@ -65,7 +67,7 @@ ifeq ($(BUILD),aws_testnet)
 	@echo "Initialising environment for AWS Testnet"
 	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets init_weatherchain_environment
 else
-	@echo "Initialising environment something else: $(BUILD)"
+	@echo "Initialising environment something else: $(BUILD)\n\nCheck Mainchain running locally:"
 	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets --ip 192.168.43.124 --network mainchain_chainnet init_weatherchain_environment
 endif
 	# Copy the generated .env here, so docker-compose can access the variables
@@ -78,6 +80,7 @@ endif
 build:
 	# Check that make init has been run first
 	@test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n\nfirst. Exiting...\n"; exit 1; }
+	$(MAKE) check-mainchain
 ifeq ($(DOCKER_CACHE),TRUE)
 	docker-compose -f docker-compose.yml -f docker-compose.override.yml build
 else
@@ -94,6 +97,7 @@ run:
 	@test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n  make build\n\nfirst. Exiting...\n"; exit 1; }
 	# Check that make build has been run first
 	@test -s $(WORKCHAIN_ASSETS_DIR)/build/.is_built || { echo "\nBUILD ERROR!\n\nDocker not built yet.\n\nRun:\n\n  make build\n\nfirst. Exiting...\n"; exit 1; }
+	$(MAKE) check-mainchain
 	docker-compose down --remove-orphans
 ifeq ($(RUN_LOG),TRUE)
 	docker-compose -f docker-compose.yml -f docker-compose.override.yml up 2>&1 | tee log.txt
@@ -112,7 +116,6 @@ init-prepare:
 	$(MAKE) info
 	$(MAKE) clean
 
-
 # Output some useful info
 info:
 	@echo "ROOT_DIR                      : $(ROOT_DIR)"
@@ -127,6 +130,14 @@ clean:
 	@rm -rf $(WORKCHAIN_ASSETS_DIR)/build
 	@rm -f $(ROOT_DIR)/docker-compose.override.yml
 
+check-mainchain:
+ifneq ($(BUILD),aws_testnet)
+ifeq ($(shell docker ps -q -f name=mainchain-validator-1),)
+	@echo "\nERROR: \n\nEnvironmant is '$(BUILD)' but Mainchain not running locally. Exiting\n\n"
+	$(MAKE) clean
+	exit 1
+endif
+endif
 
 # Output Docker composition configuration for current initialised env
 config:
