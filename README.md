@@ -93,3 +93,8 @@ so that the workchain can deposit hashes to its Workchain Root smart contract.
 ## Account notes
 
 The Weatherhain demo generates accounts, and smart contract addresses during the `make init` target.
+
+## Thanks
+
+`Docker/assets/weather-oracle-contract` derived from https://github.com/decentorganization/weather-oracle-contract  
+`Docker/assets/weather-oracle-service` derived from https://github.com/decentorganization/weather-oracle-service
