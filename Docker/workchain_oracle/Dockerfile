@@ -23,7 +23,7 @@ RUN mkdir /root/.ssh && \
     mkdir -p ${GOPATH}/src/github.com/unification-com && \
     cd ${GOPATH}/src/github.com/unification-com && \
     git clone https://github.com/unification-com/mainchain.git && \
-    git clone https://github.com/unification-com/workchain-root-oracle
+    git clone https://github.com/unification-com/oracle
 
 ENV PATH="/usr/local/go/bin:/root/.go/bin:${PATH}"
 
@@ -34,7 +34,7 @@ ENV WORKCHAIN_ROOT_CONTRACT_ADDRESS=""
 ENV WORKCHAIN_ROOT_WRITE_TIMEOUT=""
 ENV WORKCHAIN_NETWORK_ID=""
 
-RUN echo "go run /root/.go/src/github.com/unification-com/workchain-root-oracle/oracle.go" >> /root/.bash_history && \
+RUN echo "go run /root/.go/src/github.com/unification-com/oracle/oracle.go" >> /root/.bash_history && \
     echo "alias ll='ls -la'" >> /root/.bashrc
 
-CMD go run /root/.go/src/github.com/unification-com/workchain-root-oracle/oracle.go "$WORKCHAIN_WEB3_PROVIDER_URL" "$MAINCHAIN_WEB3_PROVIDER_URL" "$PRIVATE_KEY" "$WORKCHAIN_ROOT_CONTRACT_ADDRESS" $WORKCHAIN_ROOT_WRITE_TIMEOUT $WORKCHAIN_NETWORK_ID 2>&1 | tee /root/oracle_log.txt
+CMD go run /root/.go/src/github.com/unification-com/oracle/oracle.go "$WORKCHAIN_WEB3_PROVIDER_URL" "$MAINCHAIN_WEB3_PROVIDER_URL" "$PRIVATE_KEY" "$WORKCHAIN_ROOT_CONTRACT_ADDRESS" $WORKCHAIN_ROOT_WRITE_TIMEOUT $WORKCHAIN_NETWORK_ID 2>&1 | tee /root/oracle_log.txt
