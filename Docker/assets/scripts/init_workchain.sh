@@ -64,13 +64,13 @@ done < /root/assets/build/${WORKCHAIN_GENESIS_JSON_FILENAME##*=}
 # Fund the generated addresses on Mainchain using the faucet
 MAINCHAIN_FAUCET_URL=$(grep 'MAINCHAIN_FAUCET_URL' /root/assets/build/.env)
 echo "fund $EV1_PUBLIC_ADDRESS"
-wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=${EV1_PUBLIC_ADDRESS}
+wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}?to=${EV1_PUBLIC_ADDRESS}
 sleep 6s
 echo "fund $EV2_PUBLIC_ADDRESS"
-wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=${EV2_PUBLIC_ADDRESS}
+wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}?to=${EV2_PUBLIC_ADDRESS}
 sleep 6s
 echo "fund $RPC_NODE_PUBLIC_ADDRESS"
-wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=${RPC_NODE_PUBLIC_ADDRESS}
+wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}?to=${RPC_NODE_PUBLIC_ADDRESS}
 
 # Copy the generated .env to the Smart Contract deployment directory
 # since it needs some values during deployment
