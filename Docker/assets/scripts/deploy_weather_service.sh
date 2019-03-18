@@ -4,10 +4,10 @@ cp /root/build/.env /root/weather-oracle-contract/.env
 cd /root/weather-oracle-contract
 truffle compile && truffle migrate --reset 2>&1 | tee sc_log.txt
 
-WORKCHAIN_NETWORK_ID_ENV=$(grep 'WORKCHAIN_NETWORK_ID' /root/build/.env)
-WORKCHAIN_NETWORK_ID=${WORKCHAIN_NETWORK_ID_ENV##*=}
+WRKCHAIN_NETWORK_ID_ENV=$(grep 'WRKCHAIN_NETWORK_ID' /root/build/.env)
+WRKCHAIN_NETWORK_ID=${WRKCHAIN_NETWORK_ID_ENV##*=}
 
-sed -i "s/WEATHER_ORACLE_CONTRACT_ADDRESS=/WEATHER_ORACLE_CONTRACT_ADDRESS=$(node abi.js addr ${WORKCHAIN_NETWORK_ID})/g" /root/build/.env
+sed -i "s/WEATHER_ORACLE_CONTRACT_ADDRESS=/WEATHER_ORACLE_CONTRACT_ADDRESS=$(node abi.js addr ${WRKCHAIN_NETWORK_ID})/g" /root/build/.env
 sed -i "s/WEATHER_ORACLE_ABI=/WEATHER_ORACLE_ABI=$(node abi.js)/g" /root/build/.env
 
 cp /root/build/.env /root/weather-oracle-service/.env

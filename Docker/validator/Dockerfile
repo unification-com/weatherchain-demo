@@ -25,9 +25,9 @@ ENV PUBLIC_ADDRESS=""
 ENV BOOTNODE_ID=""
 ENV BOOTNODE_IP=""
 ENV BOOTNODE_PORT=""
-ENV WORKCHAIN_NETWORK_ID=""
+ENV WRKCHAIN_NETWORK_ID=""
 ENV GETH_LISTEN_PORT=""
 
-CMD exec geth --bootnodes "enode://$BOOTNODE_ID@$BOOTNODE_IP:$BOOTNODE_PORT" --networkid "$WORKCHAIN_NETWORK_ID" --verbosity=4  --syncmode=full --mine --gasprice "0" --etherbase $PUBLIC_ADDRESS --unlock $PUBLIC_ADDRESS --password ~/.walletpassword --port $GETH_LISTEN_PORT
+CMD exec geth --bootnodes "enode://$BOOTNODE_ID@$BOOTNODE_IP:$BOOTNODE_PORT" --networkid "$WRKCHAIN_NETWORK_ID" --verbosity=4  --syncmode=full --mine --gasprice "0" --etherbase $PUBLIC_ADDRESS --unlock $PUBLIC_ADDRESS --password ~/.walletpassword --port $GETH_LISTEN_PORT
 
 EXPOSE $GETH_LISTEN_PORT
