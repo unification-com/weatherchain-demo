@@ -10,10 +10,10 @@ app.use('/',express.static(__dirname + '/public'));
 // index page
 app.get('/', function(req, res) {
     res.render('pages/index',{
-        WORKCHAIN_WEB3_PROVIDER_URL: process.env.WORKCHAIN_WEB3_PROVIDER_URL,
+        WRKCHAIN_WEB3_PROVIDER_URL: process.env.WRKCHAIN_WEB3_PROVIDER_URL,
         WEATHER_ORACLE_ABI: process.env.WEATHER_ORACLE_ABI,
         WEATHER_ORACLE_CONTRACT_ADDRESS: process.env.WEATHER_ORACLE_CONTRACT_ADDRESS,
-        WORKCHAIN_EXPLORER_URL: process.env.WORKCHAIN_EXPLORER_URL,
+        WRKCHAIN_EXPLORER_URL: process.env.WRKCHAIN_EXPLORER_URL,
         WEATHER_ORACLE_CONTRACT_ADDRESS: process.env.WEATHER_ORACLE_CONTRACT_ADDRESS,
         WEATHER_SERVICE_TIMEOUT: process.env.WEATHER_SERVICE_TIMEOUT
     });
@@ -22,10 +22,10 @@ app.get('/', function(req, res) {
 // block validation page
 app.get('/validate', function(req, res) {
     res.render('pages/validate',{
-        WORKCHAIN_WEB3_PROVIDER_URL: process.env.WORKCHAIN_WEB3_PROVIDER_URL,
+        WRKCHAIN_WEB3_PROVIDER_URL: process.env.WRKCHAIN_WEB3_PROVIDER_URL,
         MAINCHAIN_WEB3_PROVIDER_URL: process.env.MAINCHAIN_WEB3_PROVIDER_URL,
-        WORKCHAIN_ROOT_CONTRACT_ADDRESS: process.env.WORKCHAIN_ROOT_CONTRACT_ADDRESS,
-        WORKCHAIN_ROOT_ABI: process.env.WORKCHAIN_ROOT_ABI,
+        WRKCHAIN_ROOT_CONTRACT_ADDRESS: process.env.WRKCHAIN_ROOT_CONTRACT_ADDRESS,
+        WRKCHAIN_ROOT_ABI: process.env.WRKCHAIN_ROOT_ABI,
         BLOCK_NUM: req.query.block
     });
 });
@@ -34,10 +34,10 @@ app.get('/validate', function(req, res) {
 app.get('/watch', function(req, res) {
     res.render('pages/event_watcher',{
         MAINCHAIN_WEB3_PROVIDER_URL: process.env.MAINCHAIN_WEB3_PROVIDER_URL,
-        WORKCHAIN_ROOT_ABI: process.env.WORKCHAIN_ROOT_ABI,
-        WORKCHAIN_ROOT_CONTRACT_ADDRESS: process.env.WORKCHAIN_ROOT_CONTRACT_ADDRESS,
+        WRKCHAIN_ROOT_ABI: process.env.WRKCHAIN_ROOT_ABI,
+        WRKCHAIN_ROOT_CONTRACT_ADDRESS: process.env.WRKCHAIN_ROOT_CONTRACT_ADDRESS,
         MAINCHAIN_EXPLORER_URL: process.env.MAINCHAIN_EXPLORER_URL,
-        WORKCHAIN_ROOT_WRITE_TIMEOUT: process.env.WORKCHAIN_ROOT_WRITE_TIMEOUT
+        WRKCHAIN_ROOT_WRITE_TIMEOUT: process.env.WRKCHAIN_ROOT_WRITE_TIMEOUT
     });
 });
 
