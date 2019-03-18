@@ -80,7 +80,7 @@ cp /root/assets/build/.env /root/wrkchain-root-contract/.env
 MAINCHAIN_NETWORK_ID=$(grep 'MAINCHAIN_NETWORK_ID' /root/assets/build/.env)
 cd /root/wrkchain-root-contract
 truffle compile
-truffle migrate --reset
+truffle migrate --network development_mnemonic --reset
 WRKCHAIN_ROOT_CONTRACT_ADDRESS=$(node abi.js addr ${MAINCHAIN_NETWORK_ID##*=})
 sed -i "s/WRKCHAIN_ROOT_CONTRACT_ADDRESS=/WRKCHAIN_ROOT_CONTRACT_ADDRESS=${WRKCHAIN_ROOT_CONTRACT_ADDRESS}/g" /root/assets/build/.env
 sed -i "s/WRKCHAIN_ROOT_ABI=/WRKCHAIN_ROOT_ABI=$(node abi.js)/g" /root/assets/build/.env
