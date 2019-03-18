@@ -18,12 +18,12 @@ services:
   weatherchain_node_1:
     networks:
       weatherchainnet:
-        ipv4_address: ${WORKCHAIN_RPC_HOST}
+        ipv4_address: ${WRKCHAIN_RPC_HOST}
 
   weatherchain_explorer:
     networks:
       weatherchainnet:
-        ipv4_address: ${WORKCHAIN_EXPLORER_IP}
+        ipv4_address: ${WRKCHAIN_EXPLORER_IP}
 
   weather_service:
     networks:
