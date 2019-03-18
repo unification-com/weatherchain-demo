@@ -70,8 +70,8 @@ else
 	@echo "Initialising environment something else: $(BUILD)\n\nCheck Mainchain running locally:"
 	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets --ip 192.168.43.124 --network mainchain_chainnet init_weatherchain_environment
 endif
-	# Copy the generated .env here, so docker-compose can access the variables
-	# during the build and run targets
+# Copy the generated .env here, so docker-compose can access the variables
+# during the build and run targets
 	@cp $(WRKCHAIN_ASSETS_DIR)/build/.env $(ROOT_DIR)/.env
 
 
