@@ -3,7 +3,7 @@ require("dotenv").config();
 import HDWalletProvider from "truffle-hdwallet-provider";
 import Web3 from "web3";
 
-const web3 = new Web3(new HDWalletProvider(process.env.MNEMONIC, process.env.WORKCHAIN_WEB3_PROVIDER_URL));
+const web3 = new Web3(new HDWalletProvider(process.env.MNEMONIC, process.env.WRKCHAIN_WEB3_PROVIDER_URL));
 const abi = JSON.parse(process.env.WEATHER_ORACLE_ABI);
 const address = process.env.WEATHER_ORACLE_CONTRACT_ADDRESS;
 const contract = web3.eth.contract(abi).at(address);
