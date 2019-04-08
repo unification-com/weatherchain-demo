@@ -49,7 +49,7 @@ module.exports = {
       host: process.env.WRKCHAIN_RPC_HOST,     // Localhost (default: none)
       port: process.env.WRKCHAIN_RPC_PORT,            // Standard Ethereum port (default: none)
       network_id: process.env.WRKCHAIN_NETWORK_ID,       // Any network (default: none)
-      provider: new HDWalletProvider(process.env.MNEMONIC, process.env.WRKCHAIN_WEB3_PROVIDER_URL),
+      provider: new HDWalletProvider(process.env.PRIVATE_KEY, process.env.WRKCHAIN_WEB3_PROVIDER_URL),
       gas: 4700000,
      },
 
