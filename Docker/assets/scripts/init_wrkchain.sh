@@ -17,7 +17,7 @@ chmod +rw /root/assets/build/bootnode.key
 sed -i "s/BOOTNODE_ID=/BOOTNODE_ID=$BOOTNODE_ID/g" /root/assets/build/.env
 
 # Write Mnemonic to .env
-sed -i "s/MNEMONIC=/MNEMONIC=$MNEMONIC/g" /root/assets/build/.env
+sed -i "s/PRIVATE_KEY=/PRIVATE_KEY=$MNEMONIC/g" /root/assets/build/.env
 
 # Get EV and RPC node addresses and keys, then write to .env
 EV1_PUBLIC_ADDRESS=$(node init.js address "$MNEMONIC" 0)
@@ -80,7 +80,7 @@ cp /root/assets/build/.env /root/wrkchain-root-contract/.env
 MAINCHAIN_NETWORK_ID=$(grep 'MAINCHAIN_NETWORK_ID' /root/assets/build/.env)
 cd /root/wrkchain-root-contract
 truffle compile
-truffle migrate --network development_mnemonic --reset
+truffle migrate --network und_mainchain --reset
 WRKCHAIN_ROOT_CONTRACT_ADDRESS=$(node abi.js addr ${MAINCHAIN_NETWORK_ID##*=})
 sed -i "s/WRKCHAIN_ROOT_CONTRACT_ADDRESS=/WRKCHAIN_ROOT_CONTRACT_ADDRESS=${WRKCHAIN_ROOT_CONTRACT_ADDRESS}/g" /root/assets/build/.env
 sed -i "s/WRKCHAIN_ROOT_ABI=/WRKCHAIN_ROOT_ABI=$(node abi.js)/g" /root/assets/build/.env
