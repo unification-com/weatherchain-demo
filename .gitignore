@@ -119,10 +119,4 @@ venv.bak/
 node_modules/
 
 # Local docker build stuff
-/Docker/assets/bootnode.key
-/Docker/assets/weatherchain.env
-/Docker/assets/weatherchain_genesis.json
-/log.txt
-/docker-compose.override.yml
-/.is_built
-/Docker/assets/build/
+/logs/*
