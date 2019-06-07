@@ -1,123 +1,236 @@
-version: "3"
+version: '3.3'
+
 services:
-  weatherchain_bootnode:
-    hostname: weatherchain_bootnode
+  # UND devnet services
+  mainchain-dev-validator-1:
+    hostname: mainchain-dev-validator-1
     build:
-      context: ./Docker
-      dockerfile: ./bootnode/Dockerfile
-    ports:
-    - ${BOOTNODE_PORT}:${BOOTNODE_PORT}/udp
-    environment:
-    - BOOTNODE_PORT=${BOOTNODE_PORT}
-
-  weatherchain_validator_1:
-    hostname: weatherchain_validator_1
-    depends_on:
-    - weatherchain_bootnode
-    environment:
-    - PUBLIC_ADDRESS=${EV1_PUBLIC_ADDRESS}
-    - BOOTNODE_ID=${BOOTNODE_ID}
-    - BOOTNODE_IP=${BOOTNODE_IP}
-    - BOOTNODE_PORT=${BOOTNODE_PORT}
-    - WRKCHAIN_NETWORK_ID=${WRKCHAIN_NETWORK_ID}
-    - GETH_LISTEN_PORT=${WRKCHAIN_EV1_GETH_LISTEN_PORT}
-    build:
-      context: ./Docker
-      dockerfile: ./validator/Dockerfile
+      context: Docker/und_devnet
+      dockerfile: validator/Dockerfile
       args:
-        PRIVATE_KEY: ${EV1_PRIVATE_KEY}
-        WALLET_PASS: ${EV1_WALLET_PASS}
-        GENESIS_JSON_FILENAME: ${WRKCHAIN_GENESIS_JSON_FILENAME}
-    container_name: weatherchain_validator_1
+        privatekey: 62eff7207e271faea97fe8d2d7ae12093c7cfe43b9e20ffd57232bf42f5cc899
+        password: pass
+        SUBNET_IP: ${SUBNET_IP}
+    container_name: mainchain-dev-validator-1
+    command: /root/.go/bin/und --verbosity 4 --datadir /root/.und_mainchain --identity "mainchain-dev-validator-1" --password /root/.accountpassword --networkid 50010 --port 30401 --mine --gasprice "1" --targetgaslimit "420000000" --etherbase "0x6C45443De823a45e8f7204F1E69428E9AB42dd08" --unlock "0x6C45443De823a45e8f7204F1E69428E9AB42dd08" --syncmode="full" --nodekey="/root/.und_mainchain/bootnode_keys/0x6C45443De823a45e8f7204F1E69428E9AB42dd08.key" --nodiscover
     ports:
-    - ${WRKCHAIN_EV1_GETH_LISTEN_PORT}:${WRKCHAIN_EV1_GETH_LISTEN_PORT}/udp
+      - 30401:30401/tcp
+    expose:
+      - 30401
+    networks:
+      wrkchainnet:
+        ipv4_address: ${SUBNET_IP}.12
 
-  weatherchain_validator_2:
-    hostname: weatherchain_validator_2
-    depends_on:
-    - weatherchain_bootnode
-    environment:
-    - PUBLIC_ADDRESS=${EV2_PUBLIC_ADDRESS}
-    - BOOTNODE_ID=${BOOTNODE_ID}
-    - BOOTNODE_IP=${BOOTNODE_IP}
-    - BOOTNODE_PORT=${BOOTNODE_PORT}
-    - WRKCHAIN_NETWORK_ID=${WRKCHAIN_NETWORK_ID}
-    - GETH_LISTEN_PORT=${WRKCHAIN_EV2_GETH_LISTEN_PORT}
+  mainchain-dev-validator-2:
+    hostname: mainchain-dev-validator-2
     build:
-      context: ./Docker
-      dockerfile: ./validator/Dockerfile
+      context: Docker/und_devnet
+      dockerfile: validator/Dockerfile
       args:
-        PRIVATE_KEY: ${EV2_PRIVATE_KEY}
-        WALLET_PASS: ${EV2_WALLET_PASS}
-        GENESIS_JSON_FILENAME: ${WRKCHAIN_GENESIS_JSON_FILENAME}
-    container_name: weatherchain_validator_2
+        privatekey: 226cd6688ec379ef14ae04e9893e96c9adc612bd4f5360d2cb3c4380f9fa612c
+        password: word
+        SUBNET_IP: ${SUBNET_IP}
+    container_name: mainchain-dev-validator-2
+    command: /root/.go/bin/und --verbosity 4 --datadir /root/.und_mainchain --identity "mainchain-dev-validator-2" --password /root/.accountpassword --networkid 50010 --port 30402 --mine --gasprice "1" --targetgaslimit "420000000" --etherbase "0x743454EE5c097E56D0470C09B6c23880356Ce5FB" --unlock "0x743454EE5c097E56D0470C09B6c23880356Ce5FB" --syncmode="full" --nodekey="/root/.und_mainchain/bootnode_keys/0x743454EE5c097E56D0470C09B6c23880356Ce5FB.key" --nodiscover
     ports:
-    - ${WRKCHAIN_EV2_GETH_LISTEN_PORT}:${WRKCHAIN_EV2_GETH_LISTEN_PORT}/udp
+      - 30402:30402/tcp
+    expose:
+      - 30402
+    networks:
+      wrkchainnet:
+        ipv4_address: ${SUBNET_IP}.13
 
-  weatherchain_node_1:
-    hostname: weatherchain_node_1
-    depends_on:
-    - weatherchain_validator_1
-    environment:
-    - BOOTNODE_ID=${BOOTNODE_ID}
-    - BOOTNODE_IP=${BOOTNODE_IP}
-    - BOOTNODE_PORT=${BOOTNODE_PORT}
-    - WRKCHAIN_NETWORK_ID=${WRKCHAIN_NETWORK_ID}
-    - GETH_LISTEN_PORT=${WRKCHAIN_RPC_NODE_GETH_LISTEN_PORT}
-    - RPC_PORT=${WRKCHAIN_RPC_PORT}
+  mainchain-dev-validator-3:
+    hostname: mainchain-dev-validator-3
     build:
-      context: ./Docker
-      dockerfile: ./node/Dockerfile
+      context: Docker/und_devnet
+      dockerfile: validator/Dockerfile
       args:
-        PRIVATE_KEY: ${RPC_NODE_PRIVATE_KEY}
-        WALLET_PASS: ${RPC_NODE_WALLET_PASS}
-        GENESIS_JSON_FILENAME: ${WRKCHAIN_GENESIS_JSON_FILENAME}
-    container_name: weatherchain_node_1
+        privatekey: 5d0929559ea34a21cfece4183400ebfbb049f7c8a7cb251b61a4b6cde399ef42
+        password: word
+        SUBNET_IP: ${SUBNET_IP}
+    container_name: mainchain-dev-validator-3
+    command: /root/.go/bin/und --verbosity 4 --datadir /root/.und_mainchain --identity "mainchain-dev-validator-3" --password /root/.accountpassword --networkid 50010 --port 30403 --mine --gasprice "1" --targetgaslimit "420000000" --etherbase "0x36D82EeF3Ce9897b0073116F29E28F6E149757d0" --unlock "0x36D82EeF3Ce9897b0073116F29E28F6E149757d0" --syncmode="full" --nodekey="/root/.und_mainchain/bootnode_keys/0x36D82EeF3Ce9897b0073116F29E28F6E149757d0.key" --nodiscover
     ports:
-    - ${WRKCHAIN_RPC_PORT}:${WRKCHAIN_RPC_PORT}
+      - 30403:30403/tcp
+    expose:
+      - 30403
+    networks:
+      wrkchainnet:
+        ipv4_address: ${SUBNET_IP}.14
 
-  weatherchain_explorer:
-    hostname: weatherchain_explorer
-    depends_on:
-    - weatherchain_node_1
-    ports:
-    - ${WRKCHAIN_EXPLORER_PORT}:${WRKCHAIN_EXPLORER_PORT}
-    environment:
-    - WRKCHAIN_EXPLORER_PORT=${WRKCHAIN_EXPLORER_PORT}
+  mainchain-dev-rpc:
+    hostname: mainchain-dev-rpc
     build:
-      context: ./Docker
-      dockerfile: ./explorer/Dockerfile
+      context: Docker/und_devnet
+      dockerfile: validator/Dockerfile
       args:
-        WRKCHAIN_EXPLORER_PORT: ${WRKCHAIN_EXPLORER_PORT}
-        WRKCHAIN_RPC_PORT: ${WRKCHAIN_RPC_PORT}
-        COIN_SYM: ${WRKCHAIN_COIN_SYM}
-
-    container_name: weatherchain_explorer
-
-  weather_service:
-    hostname: weather_service
-    depends_on:
-      - weatherchain_node_1
-    build:
-      context: ./Docker
-      dockerfile: ./weather_service/Dockerfile
+        privatekey: 5c7d979c27680c498c0b3b2a00ef318097a7567b15f3a6a3fa1393b9da301a14
+        password: word
+        SUBNET_IP: ${SUBNET_IP}
+    container_name: mainchain-dev-rpc
+    command: /root/.go/bin/und --verbosity 4 --datadir /root/.und_mainchain --identity "mainchain-rpc" --networkid 50010 --port 30404 --rpc --rpccorsdomain "*" --rpcaddr 0.0.0.0 --rpcport 8101 --rpcvhosts "*" --ws --wsaddr 0.0.0.0 --wsport 8111 --wsorigins "*" --syncmode="full" --nodiscover
     ports:
-    - ${WEATHERCHAIN_UI_PORT}:${WEATHERCHAIN_UI_PORT}
-    container_name: weather_service
+      - 30404:30404/tcp
+      - 8101:8101/tcp
+      - 8111:8111/tcp
+    expose:
+      - 30404
+      - 8101
+      - 8111
+    networks:
+      wrkchainnet:
+        ipv4_address: ${SUBNET_IP}.15
 
-  weatherchain_oracle:
-    hostname: weatherchain_oracle
+  mainchain-dev-explorer:
+    hostname: mainchain-dev-explorer
     depends_on:
-      - weather_service
+      - mainchain-dev-rpc
+    ports:
+      - 8080:8080
     build:
-      context: ./Docker
-      dockerfile: ./wrkchain_oracle/Dockerfile
-    container_name: weatherchain_oracle
-    environment:
-    - MAINCHAIN_WEB3_PROVIDER_URL=${MAINCHAIN_WEB3_PROVIDER_URL}
-    - WRKCHAIN_WEB3_PROVIDER_URL=${WRKCHAIN_WEB3_PROVIDER_URL}
-    - PRIVATE_KEY=${EV1_PRIVATE_KEY}
-    - WRKCHAIN_ROOT_CONTRACT_ADDRESS=${WRKCHAIN_ROOT_CONTRACT_ADDRESS}
-    - WRKCHAIN_ROOT_WRITE_TIMEOUT=${WRKCHAIN_ROOT_WRITE_TIMEOUT}
-    - WRKCHAIN_NETWORK_ID=${WRKCHAIN_NETWORK_ID}
+      context: Docker/und_devnet
+      dockerfile: explorer/Dockerfile
+      args:
+        mainchain_rpc: "${SUBNET_IP}.15:8101"
+    container_name: mainchain-dev-explorer
+    expose:
+      - 8080
+    networks:
+      wrkchainnet:
+        ipv4_address: ${SUBNET_IP}.16
 
+  # WRKChain Services
+  weatcherchain-rpc:
+    depends_on:
+      - weatcherchain-validator-1
+    build:
+      args:
+        GO_VERSION: 10.3
+        PRIVATE_KEY: 5d0929559ea34a21cfece4183400ebfbb049f7c8a7cb251b61a4b6cde399ef42
+        WALLET_PASS: pass
+        WRKCHAIN_DATA_DIR: .und_wrkchain
+        SUBNET_IP: ${SUBNET_IP}
+      context: Docker/wrkchain
+      dockerfile: node/Dockerfile
+    command: /root/.go/bin/geth --datadir=/root/.und_wrkchain --networkid 3339117241
+      --nodekey="/root/.und_wrkchain/node_keys/0x36D82EeF3Ce9897b0073116F29E28F6E149757d0.key"
+      --port 30308 --rpc --rpcaddr "0.0.0.0" --rpcapi "admin,db,debug,eth,net,personal,txpool,web3"
+      --rpccorsdomain "*" --rpcport "8547" --rpcvhosts "*" --syncmode=full --verbosity=3 --nodiscover
+    container_name: weatcherchain-rpc
+    expose:
+    - 8547
+    hostname: weatcherchain-rpc
+    networks:
+      wrkchainnet:
+        ipv4_address: ${SUBNET_IP}.25
+    ports:
+    - published: 8547
+      target: 8547
+  weatcherchain-validator-1:
+    build:
+      args:
+        GO_VERSION: 10.3
+        PRIVATE_KEY: 62eff7207e271faea97fe8d2d7ae12093c7cfe43b9e20ffd57232bf42f5cc899
+        WALLET_PASS: pass
+        WRKCHAIN_DATA_DIR: .und_wrkchain
+        SUBNET_IP: ${SUBNET_IP}
+      context: Docker/wrkchain
+      dockerfile: node/Dockerfile
+    command: /root/.go/bin/geth --datadir=/root/.und_wrkchain --etherbase 0x6C45443De823a45e8f7204F1E69428E9AB42dd08
+      --gasprice 0 --mine --networkid 3339117241 --nodekey="/root/.und_wrkchain/node_keys/0x6C45443De823a45e8f7204F1E69428E9AB42dd08.key"
+      --nodiscover --password /root/.walletpassword --port 30306 --syncmode=full --unlock
+      0x6C45443De823a45e8f7204F1E69428E9AB42dd08 --verbosity=4 --nodiscover
+    container_name: weatcherchain-validator-1
+    expose:
+    - 30306
+    hostname: weatcherchain-validator-1
+    networks:
+      wrkchainnet:
+        ipv4_address: ${SUBNET_IP}.23
+    ports:
+    - published: 30306
+      target: 30306
+  weatcherchain-validator-2:
+    build:
+      args:
+        GO_VERSION: 10.3
+        PRIVATE_KEY: 226cd6688ec379ef14ae04e9893e96c9adc612bd4f5360d2cb3c4380f9fa612c
+        WALLET_PASS: pass
+        WRKCHAIN_DATA_DIR: .und_wrkchain
+        SUBNET_IP: ${SUBNET_IP}
+      context: Docker/wrkchain
+      dockerfile: node/Dockerfile
+    command: /root/.go/bin/geth --datadir=/root/.und_wrkchain --etherbase 0x743454EE5c097E56D0470C09B6c23880356Ce5FB
+      --gasprice 0 --mine --networkid 3339117241 --nodekey="/root/.und_wrkchain/node_keys/0x743454EE5c097E56D0470C09B6c23880356Ce5FB.key"
+      --nodiscover --password /root/.walletpassword --port 30307 --syncmode=full --unlock
+      0x743454EE5c097E56D0470C09B6c23880356Ce5FB --verbosity=4 --nodiscover
+    container_name: weatcherchain-validator-2
+    expose:
+    - 30307
+    hostname: weatcherchain-validator-2
+    networks:
+      wrkchainnet:
+        ipv4_address: ${SUBNET_IP}.24
+    ports:
+    - published: 30307
+      target: 30307
+  weatcherchain-explorer:
+    hostname: weatcherchain-explorer
+    depends_on:
+      - weatcherchain-rpc
+    ports:
+      - 8081:8081
+    build:
+      context: Docker/wrkchain
+      dockerfile: explorer/Dockerfile
+      args:
+        wrkchain_rpc: "${SUBNET_IP}.25:8547"
+    container_name: weatcherchain-explorer
+    expose:
+      - 8081
+    networks:
+      wrkchainnet:
+        ipv4_address: ${SUBNET_IP}.26
+  weatcherchain-wrkoracle:
+    hostname: weatcherchain-wrkoracle
+    depends_on:
+      - weatcherchain-rpc
+    build:
+      context: Docker/wrkchain
+      dockerfile: wrkoracle/Dockerfile
+      args:
+        PRIVATE_KEY: cbb3de0ea413043e7ae615115e01d3435a7e2d66728f6739006fa5fe95e69898
+        WALLET_PASS: pass
+    command: /root/src/run-wrkoracle.sh ${SUBNET_IP}
+    container_name: weatcherchain-wrkoracle
+    networks:
+      wrkchainnet:
+        ipv4_address: ${SUBNET_IP}.27
+  weather-service:
+    hostname: weather-service
+    depends_on:
+      - weatcherchain-validator-1
+    build:
+      context: Docker/wrkchain
+      dockerfile: weather_service/Dockerfile
+      args:
+        WRKCHAIN_WEB3_PROVIDER_URL: "${SUBNET_IP}.25:8547"
+        WRKCHAIN_RPC_HOST: "${SUBNET_IP}.25"
+        WRKCHAIN_RPC_PORT: "8547"
+        MAINCHAIN_WEB3_PROVIDER_URL: "${SUBNET_IP}.15:8101"
+    ports:
+      - 4040:4040
+    expose:
+      - 4040
+    container_name: weather-service
+    networks:
+      wrkchainnet:
+        ipv4_address: ${SUBNET_IP}.28
+
+networks:
+  wrkchainnet:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: ${SUBNET_IP}.0/24
